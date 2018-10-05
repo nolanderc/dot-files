@@ -1,0 +1,40 @@
+{
+    // General
+    "files.autoSave": "onFocusChange",
+    
+    "editor.renderWhitespace": "boundary",
+    "editor.trimAutoWhitespace": false,
+    "files.trimTrailingWhitespace": false,
+    
+    "editor.cursorBlinking": "phase",
+    
+    
+    // Appearance
+    "window.menuBarVisibility": "toggle",
+    "workbench.statusBar.feedback.visible": false,
+    
+    "window.zoomLevel": 0,
+    
+    "workbench.colorCustomizations": {
+        "statusBar.background": "#333333",
+        "statusBar.noFolderBackground": "#333333"
+    },
+    
+    // Indent wrapped lines
+    "editor.wrappingIndent": "indent",
+    
+    // Add support for Caps-Escape swap
+    "keyboard.dispatch": "keyCode",
+    
+    // Latex
+    "latex-workshop.view.pdf.viewer": "browser",
+    "latex-workshop.latex.autoBuild.onTexChange.enabled": false,
+    "latex-workshop.latex.autoBuild.onSave.enabled": false,
+    
+    // Vim
+    "vim.useCtrlKeys": true,
+    "editor.lineNumbers": "relative",
+    
+    // Telemetry
+    "telemetry.enableTelemetry": false
+}
