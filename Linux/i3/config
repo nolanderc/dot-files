@@ -154,20 +154,20 @@ bindsym $mod+r mode "resize"
 bar {
         status_command i3status
         mode hide
-        modifier Mod1
+        modifier Mod4
 }
 
 # Enable natural scrolling
-exec --no-startup-id synclient NaturalScrolling=1 VertScrollDelta=-300 HorizScrollDelta=-300
+exec_always --no-startup-id synclient NaturalScrolling=1 VertScrollDelta=-300 HorizScrollDelta=-300 PalmDetect=1 PalmMinZ=50 PalmMinWidth=4 HorizTwoFingerScroll=1 HorizEgdeScroll=1 FingerHigh=50
 
 
 # Enable swedish and english layout
 # Enable switching layouts by pressing Win+Space
 # Bind Caps Lock to Escape
-exec setxkbmap -layout 'us(dvorak-alt-intl),se(svdvorak)' -option grp:win_space_toggle,caps:escape
+exec_always setxkbmap -layout 'us(dvorak-alt-intl),se(svdvorak)' -option grp:win_space_toggle,caps:escape
 
 # Disable touchpad while typing
-exec syndaemon -K -i 0.25 -R -d
+exec_always syndaemon -K -i 0.25 -R -d
 
 # Disable title bars for windows
 new_window none
