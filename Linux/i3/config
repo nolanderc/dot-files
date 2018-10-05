@@ -166,6 +166,9 @@ exec_always --no-startup-id synclient NaturalScrolling=1 VertScrollDelta=-300 Ho
 # Bind Caps Lock to Escape
 exec_always setxkbmap -layout 'us(dvorak-alt-intl),se(svdvorak)' -option grp:win_space_toggle,caps:escape
 
+# Disable mouse acceleration
+exec_always xinput set-prop 11 304 0 1
+
 # Disable touchpad while typing
 exec_always syndaemon -K -i 0.25 -R -d
 
