@@ -176,6 +176,9 @@ exec_always syndaemon -K -i 0.25 -R -d
 new_window none
 new_float pixel 1
 
+# Set background color
+exec_always xsetroot -solid '#202020'
+
 # Enable locking session from keyboard
 bindsym $mod+Shift+comma exec i3lock-fancy -g -t "" 
 bindsym $mod+Delete exec i3lock-fancy -g -t ""
