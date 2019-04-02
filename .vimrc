@@ -26,6 +26,7 @@ Plug 'gabrielelana/vim-markdown'
 Plug 'lervag/vimtex'
 
 Plug 'rust-lang/rust.vim'
+Plug 'cespare/vim-toml'
 
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
