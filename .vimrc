@@ -26,7 +26,6 @@ Plug 'gabrielelana/vim-markdown'
 Plug 'lervag/vimtex'
 
 Plug 'rust-lang/rust.vim'
-Plug 'cespare/vim-toml'
 
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
@@ -37,9 +36,16 @@ Plug 'JuliaEditorSupport/julia-vim'
 Plug 'daeyun/vim-matlab'
 
 " === Completion ===
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+Plug 'lighttiger2505/deoplete-vim-lsp'
 
+Plug 'sirver/ultisnips'
 
 " === Files ===
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -51,7 +57,7 @@ Plug 'nelstrom/vim-visual-star-search'
 Plug 'godlygeek/tabular'
 Plug 'cohama/lexima.vim'
 
-" === General === 
+" === General ===
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'tpope/vim-obsession'
 
@@ -64,15 +70,16 @@ call plug#end()
 " Configure Plugins (conf-plugin)
 " ========================
 
+let g:deoplete#enable_at_startup = 1
+
 " Disable scratch preview
 set completeopt-=preview
 
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
+" imap <c-space> <Plug>(asyncomplete_force_refresh)
 
-imap <c-space> <Plug>(asyncomplete_force_refresh)
-
+let g:UltiSnipsExpandTrigger = '<tab>'
+let g:UltiSnipsJumpForwardTrigger = '<tab>'
+let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 
 set shortmess+=c
 
@@ -82,6 +89,16 @@ let g:table_mode_corner='|'
 
 " JAVA
 autocmd FileType java setlocal omnifunc=javacomplete#Complete
+
+" Latex
+autocmd FileType tex setlocal omnifunc=vimtex#complete#omnifunc
+let g:tex_flavor = 'latex'
+call deoplete#custom#var('omni', 'input_patterns', {
+            \ 'tex': g:vimtex#re#deoplete
+            \})
+
+set conceallevel=1
+let g:tex_conceal='abdmg'
 
 " RUST
 " Set files ending with *.rs to rust source
@@ -106,7 +123,7 @@ set signcolumn=no
 " ========================
 
 " make backspace work like most other programs
-set backspace=2 
+set backspace=2
 
 " Make <ESC> work immediately when exiting insert mode
 set timeout
@@ -157,12 +174,12 @@ highlight GruvboxAquaSign ctermbg=NONE guibg=NONE
 highlight CursorLineNr guifg=#7b6e65 guibg=NONE
 
 " Set the color of tabs
-highlight TabLine cterm=NONE gui=NONE guifg=#7b6e65 guibg=NONE
+highlight TabLine cterm=NONE guifg=#7b6e65 guibg=NONE
 highlight TabLineFill guibg=NONE
 highlight TabLineSel guibg=NONE
 
 " Make Rust Doc-Comments italics
-highlight Special cterm=italic gui=italic
+highlight Special cterm=italic
 
 
 " Make the hightlight color less distracting
@@ -197,7 +214,7 @@ endfunction
 augroup BWCCreateDir
   autocmd!
   autocmd BufWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))
-augroup END 
+augroup END
 
 
 " Only complete the common part in wildmenu
@@ -267,7 +284,7 @@ noremap <Leader>n :tabe <C-R>=expand("%:~:.:h") . "/" <CR>
 
 
 " Start inserting on right indentation
-function! InsertOnIndentation(default_action) 
+function! InsertOnIndentation(default_action)
     if match(getline('.'), "^\\s*$") == 0
         return 'S'
     else
@@ -283,7 +300,7 @@ noremap <expr> I InsertOnIndentation('I')
 " ========================
 
 " Save as sudo
-command! W w !sudo tee "%" > /dev/null 
+command! W w !sudo tee "%" > /dev/null
 
 " Make cnext and cprevious wrap around
 command! Cnext try | cnext | catch | cfirst | catch | endtry
@@ -296,4 +313,5 @@ command! Cprev try | cprev | catch | clast | catch | endtry
 
 " Save buffers on focus lost
 au FocusLost * :wa
+
 
