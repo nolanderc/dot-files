@@ -35,6 +35,8 @@ Plug 'pest-parser/pest.vim'
 Plug 'JuliaEditorSupport/julia-vim'
 Plug 'daeyun/vim-matlab'
 
+Plug 'othree/csscomplete.vim'
+
 " === Completion ===
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -46,6 +48,7 @@ endif
 Plug 'lighttiger2505/deoplete-vim-lsp'
 
 Plug 'sirver/ultisnips'
+Plug 'honza/vim-snippets'
 
 " === Files ===
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -94,8 +97,13 @@ autocmd FileType java setlocal omnifunc=javacomplete#Complete
 autocmd FileType tex setlocal omnifunc=vimtex#complete#omnifunc
 let g:tex_flavor = 'latex'
 call deoplete#custom#var('omni', 'input_patterns', {
-            \ 'tex': g:vimtex#re#deoplete
+            \ 'tex': g:vimtex#re#deoplete,
+            \ 'css': 'csscomplete#CompleteCSS'
             \})
+
+" CSS
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS noci
+
 
 set conceallevel=1
 let g:tex_conceal='abdmg'
