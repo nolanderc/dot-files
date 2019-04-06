@@ -29,6 +29,7 @@ Plug 'rust-lang/rust.vim'
 
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
+Plug 'leafgarland/typescript-vim'
 
 Plug 'pest-parser/pest.vim'
 
@@ -139,10 +140,6 @@ set softtabstop=4
 
 " Use spaces over tabs
 set expandtab
-
-" Render tabs as arrows
-set list
-set listchars=tab:>-
 
 
 " Soft wrap of lines
