@@ -105,8 +105,6 @@ call deoplete#custom#var('omni', 'input_patterns', {
 " CSS
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS noci
 
-
-set conceallevel=1
 let g:tex_conceal='abdmg'
 
 " RUST
