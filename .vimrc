@@ -177,12 +177,12 @@ highlight GruvboxAquaSign ctermbg=NONE guibg=NONE
 highlight CursorLineNr guifg=#7b6e65 guibg=NONE
 
 " Set the color of tabs
-highlight TabLine cterm=NONE guifg=#7b6e65 guibg=NONE
+highlight TabLine cterm=NONE gui=italic guifg=#7b6e65 guibg=NONE
 highlight TabLineFill guibg=NONE
 highlight TabLineSel guibg=NONE
 
 " Make Rust Doc-Comments italics
-highlight Special cterm=italic
+highlight Special cterm=italic gui=italic ctermfg=130 guifg=#af5f00
 
 
 " Make the hightlight color less distracting
