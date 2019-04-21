@@ -60,6 +60,7 @@ Plug 'tpope/vim-surround'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'godlygeek/tabular'
 Plug 'cohama/lexima.vim'
+Plug 'PeterRincker/vim-argumentative'
 
 " === General ===
 Plug 'tmux-plugins/vim-tmux-focus-events'
@@ -177,9 +178,9 @@ highlight GruvboxAquaSign ctermbg=NONE guibg=NONE
 highlight CursorLineNr guifg=#7b6e65 guibg=NONE
 
 " Set the color of tabs
-highlight TabLine cterm=NONE gui=italic guifg=#7b6e65 guibg=NONE
+highlight TabLine cterm=NONE gui=NONE guifg=#7b6e65 guibg=NONE
 highlight TabLineFill guibg=NONE
-highlight TabLineSel guibg=NONE
+highlight TabLineSel cterm=italic gui=italic guibg=NONE
 
 " Make Rust Doc-Comments italics
 highlight Special cterm=italic gui=italic ctermfg=130 guifg=#af5f00
