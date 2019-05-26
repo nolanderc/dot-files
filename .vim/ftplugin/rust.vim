@@ -20,3 +20,15 @@ set textwidth=100
 " Enable wrapping while typing
 set fo+=t
 
+
+" Add function text object
+vnoremap if :<C-U>silent! normal! [mvi{<CR>
+omap if :normal Vif<CR>
+
+" Surround selected text with Option<>
+vnoremap So <ESC>`<iOption<<ESC>`>7la><ESC>
+vmap SO So
+
+" Surround selected text with Result<, |>
+vnoremap Sr <ESC>`<iResult<<ESC>`>7la, ><ESC>i
+vmap SR Sr

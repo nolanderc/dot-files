@@ -18,10 +18,7 @@ Plug 'morhetz/gruvbox'
 
 
 " === Languages ===
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
-
-Plug 'gabrielelana/vim-markdown'
+" Plug 'gabrielelana/vim-markdown'
 
 Plug 'lervag/vimtex'
 
@@ -30,6 +27,7 @@ Plug 'rust-lang/rust.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'leafgarland/typescript-vim'
+Plug 'posva/vim-vue'
 
 Plug 'pest-parser/pest.vim'
 
@@ -39,6 +37,9 @@ Plug 'daeyun/vim-matlab'
 Plug 'othree/csscomplete.vim'
 
 " === Completion ===
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
@@ -57,6 +58,7 @@ Plug 'junegunn/fzf.vim'
 
 " === Editing ===
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'godlygeek/tabular'
 Plug 'cohama/lexima.vim'
@@ -70,6 +72,8 @@ Plug 'amerlyq/vim-focus-autocmd'
 
 " Stop loading plugins
 call plug#end()
+
+filetype plugin on
 
 " ========================
 " Configure Plugins (conf-plugin)
@@ -114,7 +118,7 @@ autocmd BufReadPost *.rs setlocal filetype=rust
 
 " LANGUAGE SERVER
 " Start the Rust Language Server
-au User lsp_setup call lsp#register_server({
+autocmd User lsp_setup call lsp#register_server({
         \ 'name': 'rls',
         \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
         \ 'whitelist': ['rust'],
@@ -129,6 +133,11 @@ set signcolumn=no
 " ========================
 " General Configuration (conf-general)
 " ========================
+
+
+set autoread
+au FocusGained,BufEnter * :checktime
+
 
 " make backspace work like most other programs
 set backspace=2
@@ -167,27 +176,27 @@ let g:gruvbox_italic=1
 colorscheme gruvbox
 
 " Set the color of the gutter
-highlight SignColumn ctermbg=NONE guibg=NONE
-highlight GruvboxRedSign ctermbg=NONE guibg=NONE
+highlight SignColumn        ctermbg=NONE guibg=NONE
+highlight GruvboxRedSign    ctermbg=NONE guibg=NONE
 highlight GruvboxYellowSign ctermbg=NONE guibg=NONE
-highlight GruvboxGreenSign ctermbg=NONE guibg=NONE
-highlight GruvboxBlueSign ctermbg=NONE guibg=NONE
+highlight GruvboxGreenSign  ctermbg=NONE guibg=NONE
+highlight GruvboxBlueSign   ctermbg=NONE guibg=NONE
 highlight GruvboxPurpleSign ctermbg=NONE guibg=NONE
-highlight GruvboxAquaSign ctermbg=NONE guibg=NONE
+highlight GruvboxAquaSign   ctermbg=NONE guibg=NONE
 
 highlight CursorLineNr guifg=#7b6e65 guibg=NONE
 
 " Set the color of tabs
 highlight TabLine cterm=NONE gui=NONE guifg=#7b6e65 guibg=NONE
-highlight TabLineFill guibg=NONE
-highlight TabLineSel cterm=italic gui=italic guibg=NONE
+highlight TabLineFill ctermbg=NONE guibg=NONE
+highlight TabLineSel cterm=italic gui=italic ctermbg=NONE guibg=NONE
 
 " Make Rust Doc-Comments italics
 highlight Special cterm=italic gui=italic ctermfg=130 guifg=#af5f00
 
 
 " Make the hightlight color less distracting
-hi QuickFixLine cterm=italic,bold ctermfg=NONE ctermbg=NONE
+highlight QuickFixLine cterm=italic,bold ctermfg=NONE ctermbg=NONE
 
 
 " Set relative line numbers
@@ -284,7 +293,11 @@ noremap <Leader>o :FZF<CR>
 
 " Edit a file relative to current file
 noremap <Leader>t :tabe <C-R>=expand("%:~:.:h") . "/" <CR>
-noremap <Leader>n :tabe <C-R>=expand("%:~:.:h") . "/" <CR>
+noremap <Leader>n :tabe <C-R>=expand("%:~:.:r") . "/" <CR>
+
+
+" Replace visually selected text in file
+vnoremap <C-r> "hy:%s/<C-r>h/<C-r>h/g<left><left>
 
 
 " Start inserting on right indentation
@@ -316,6 +329,6 @@ command! Cprev try | cprev | catch | clast | catch | endtry
 " ========================
 
 " Save buffers on focus lost
-au FocusLost * :wa
+autocmd FocusLost,BufLeave * :wa
 
 
