@@ -3,6 +3,10 @@ set encoding=utf-8
 " Loading Plugins (load-plugins)
 " ========================
 
+" HTML/XML
+let xml_use_html = 1
+let xml_use_xhtml = 1
+
 " Load the plugin manager
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
   silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -18,11 +22,17 @@ Plug 'morhetz/gruvbox'
 
 
 " === Languages ===
-" Plug 'gabrielelana/vim-markdown'
+Plug 'drmingdrmer/vim-syntax-markdown'
+
+Plug 'mustache/vim-mustache-handlebars'
 
 Plug 'lervag/vimtex'
 
 Plug 'rust-lang/rust.vim'
+Plug 'cespare/vim-toml'
+
+Plug 'ron-rs/ron.vim'
+Plug 'mrk21/yaml-vim'
 
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
@@ -34,21 +44,10 @@ Plug 'pest-parser/pest.vim'
 Plug 'JuliaEditorSupport/julia-vim'
 Plug 'daeyun/vim-matlab'
 
-Plug 'othree/csscomplete.vim'
-
 " === Completion ===
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
+Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
-Plug 'lighttiger2505/deoplete-vim-lsp'
-
+" === Snippets ===
 Plug 'sirver/ultisnips'
 Plug 'honza/vim-snippets'
 
@@ -79,8 +78,6 @@ filetype plugin on
 " Configure Plugins (conf-plugin)
 " ========================
 
-let g:deoplete#enable_at_startup = 1
-
 " Disable scratch preview
 set completeopt-=preview
 
@@ -102,19 +99,15 @@ autocmd FileType java setlocal omnifunc=javacomplete#Complete
 " Latex
 autocmd FileType tex setlocal omnifunc=vimtex#complete#omnifunc
 let g:tex_flavor = 'latex'
-call deoplete#custom#var('omni', 'input_patterns', {
-            \ 'tex': g:vimtex#re#deoplete,
-            \ 'css': 'csscomplete#CompleteCSS'
-            \})
 
-" CSS
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS noci
+let g:tex_conceal='abdmgs'
+set conceallevel=1
 
-let g:tex_conceal='abdmg'
 
 " RUST
 " Set files ending with *.rs to rust source
 autocmd BufReadPost *.rs setlocal filetype=rust
+autocmd BufNewFile,BufEnter *.pl setlocal filetype=prolog
 
 " LANGUAGE SERVER
 " Start the Rust Language Server
@@ -293,12 +286,60 @@ noremap <Leader>o :FZF<CR>
 
 " Edit a file relative to current file
 noremap <Leader>t :tabe <C-R>=expand("%:~:.:h") . "/" <CR>
+vnoremap <Leader>t y:tabe <C-R>=expand("%:~:.:h") . "/" <CR><C-R>"
+
+" Edit a file in a directory named the same as the current file
 noremap <Leader>n :tabe <C-R>=expand("%:~:.:r") . "/" <CR>
+vnoremap <Leader>n y:tabe <C-R>=expand("%:~:.:r") . "/" <CR><C-R>"
 
 
 " Replace visually selected text in file
 vnoremap <C-r> "hy:%s/<C-r>h/<C-r>h/g<left><left>
 
+
+" Format file
+let g:rustfmt_options = '--edition 2018'
+autocmd FileType rust nmap <Leader>f :RustFmt<CR>
+
+" Remove dbg! macro 
+autocmd FileType rust nmap <Leader>d /dbg!(<CR>dt(ds)
+
+" Enclose in dbg! macro
+autocmd FileType rust vmap <Leader>d S)idbg!<ESC>
+
+" Perform code action
+nmap <silent> <Leader>e <Plug>(coc-codeaction)
+
+" Repeat last macro
+noremap Q @@
+
+" Repeat last macro
+vnoremap Q :norm @@<CR>
+
+" Execute current line as command
+noremap <silent> ,e vipy`>o<ESC>pvip:s/\\\n//g<CR>vipd:.!<C-R>"<CR>
+
+noremap ,E :exec '!'.getline('.')<CR>
+
+" Repeat previous command in normal mode on each line in visual mode
+vnoremap <leader>. :norm .<CR>
+
+" vim -b : edit binary using xxd-format!
+augroup Binary
+  au!
+  au BufReadPre   *.wav let &bin=1
+  au BufReadPost  *.wav if &bin | %!xxd
+  au BufReadPost  *.wav set ft=xxd | endif
+  au BufWritePre  *.wav if &bin | %!xxd -r
+  au BufWritePre  *.wav endif
+  au BufWritePost *.wav if &bin | %!xxd
+  au BufWritePost *.wav set nomod | endif
+augroup END
+
+
+" ========================
+" Editing
+" ========================
 
 " Start inserting on right indentation
 function! InsertOnIndentation(default_action)
@@ -323,6 +364,8 @@ command! W w !sudo tee "%" > /dev/null
 command! Cnext try | cnext | catch | cfirst | catch | endtry
 command! Cprev try | cprev | catch | clast | catch | endtry
 
+" Open vimrc in new tab
+command! Vimrc tabe ~/.vimrc
 
 " ========================
 " Events (conf-events)
