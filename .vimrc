@@ -26,6 +26,8 @@ Plug 'drmingdrmer/vim-syntax-markdown'
 
 Plug 'mustache/vim-mustache-handlebars'
 
+Plug 'neovimhaskell/haskell-vim'
+
 Plug 'lervag/vimtex'
 
 Plug 'rust-lang/rust.vim'
@@ -44,8 +46,14 @@ Plug 'pest-parser/pest.vim'
 Plug 'JuliaEditorSupport/julia-vim'
 Plug 'daeyun/vim-matlab'
 
+Plug 'tpope/vim-ragtag'
+
+Plug 'vim-scripts/DoxygenToolkit.vim'
+
+Plug 'tikhomirov/vim-glsl'
+
 " === Completion ===
-Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " === Snippets ===
 Plug 'sirver/ultisnips'
@@ -54,6 +62,7 @@ Plug 'honza/vim-snippets'
 " === Files ===
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'derekwyatt/vim-fswitch'
 
 " === Editing ===
 Plug 'tpope/vim-surround'
@@ -92,6 +101,7 @@ set shortmess+=c
 " MARKDOWN
 let vim_markdown_preview_pandoc=1
 let g:table_mode_corner='|'
+let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'c', 'rust', 'prolog']
 
 " JAVA
 autocmd FileType java setlocal omnifunc=javacomplete#Complete
@@ -121,6 +131,19 @@ let g:lsp_diagnostics_enabled = 0
 
 
 set signcolumn=no
+
+
+" COBOL
+let cobol_legacy_code = 1
+unlet cobol_legacy_code
+
+
+" C++
+au! BufEnter *.cpp let b:fswitchdst = 'hpp,h' | let b:fswitchlocs = '../include'
+
+let g:load_doxygen_syntax=1
+
+noremap <Leader>h :w<CR>:FSHere<CR>
 
 
 " ========================
@@ -298,7 +321,6 @@ vnoremap <C-r> "hy:%s/<C-r>h/<C-r>h/g<left><left>
 
 
 " Format file
-let g:rustfmt_options = '--edition 2018'
 autocmd FileType rust nmap <Leader>f :RustFmt<CR>
 
 " Remove dbg! macro 
@@ -309,12 +331,13 @@ autocmd FileType rust vmap <Leader>d S)idbg!<ESC>
 
 " Perform code action
 nmap <silent> <Leader>e <Plug>(coc-codeaction)
+" Show hover information
+nmap <silent> K :call CocAction('doHover')<CR>
+
+noremap Q @q
 
 " Repeat last macro
-noremap Q @@
-
-" Repeat last macro
-vnoremap Q :norm @@<CR>
+vnoremap Q :norm @q<CR>
 
 " Execute current line as command
 noremap <silent> ,e vipy`>o<ESC>pvip:s/\\\n//g<CR>vipd:.!<C-R>"<CR>

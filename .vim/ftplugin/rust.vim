@@ -23,3 +23,10 @@ vnoremap Sr <ESC>`<iResult<<ESC>`>7la><ESC>
 " Option<T|>    =>    T|
 nnoremap dso vi><ESC>`>lx`<hvbd
 
+nmap gd <Plug>(coc-definition)
+nmap gy <Plug>(coc-type-definition)
+nmap gi <Plug>(coc-implementation)
+nmap gr <Plug>(coc-references)
+
+nmap gr <Plug>(coc-references)
+
