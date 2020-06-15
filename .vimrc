@@ -145,6 +145,8 @@ let g:load_doxygen_syntax=1
 
 noremap <Leader>h :w<CR>:FSHere<CR>
 
+" Zed
+autocmd BufEnter *.zed set syntax=rust
 
 " ========================
 " General Configuration (conf-general)
@@ -398,3 +400,5 @@ command! Vimrc tabe ~/.vimrc
 autocmd FocusLost,BufLeave * :wa
 
 
+" fold blocks according to their indentation 
+set foldmethod=indent
