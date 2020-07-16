@@ -28,5 +28,3 @@ nmap gy <Plug>(coc-type-definition)
 nmap gi <Plug>(coc-implementation)
 nmap gr <Plug>(coc-references)
 
-nmap gr <Plug>(coc-references)
-

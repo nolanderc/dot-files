@@ -307,7 +307,8 @@ noremap [q :Cprev<CR>
 noremap ]q :Cnext<CR>
 
 " Search for files in current directory
-noremap <Leader>o :FZF<CR>
+noremap <Leader>o :GFiles?<CR>
+noremap <Leader>O :Rg<CR>
 
 " Edit a file relative to current file
 noremap <Leader>t :tabe <C-R>=expand("%:~:.:h") . "/" <CR>
@@ -332,9 +333,11 @@ autocmd FileType rust nmap <Leader>d /dbg!(<CR>dt(ds)
 autocmd FileType rust vmap <Leader>d S)idbg!<ESC>
 
 " Perform code action
-nmap <silent> <Leader>e <Plug>(coc-codeaction)
+nmap <silent> <Leader>e <Plug>(coc-codeaction-line)
 " Show hover information
 nmap <silent> K :call CocAction('doHover')<CR>
+" Rename current symbol
+nmap <leader>r <Plug>(coc-rename)
 
 noremap Q @q
 
