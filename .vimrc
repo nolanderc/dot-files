@@ -307,7 +307,7 @@ noremap [q :Cprev<CR>
 noremap ]q :Cnext<CR>
 
 " Search for files in current directory
-noremap <Leader>o :GFiles?<CR>
+noremap <Leader>o :Files<CR>
 noremap <Leader>O :Rg<CR>
 
 " Edit a file relative to current file
@@ -380,6 +380,9 @@ endfunction
 noremap <expr> A InsertOnIndentation('A')
 noremap <expr> I InsertOnIndentation('I')
 
+" Select the current line (but ignoring whitespace)
+nnoremap - ^vg_
+
 
 " ========================
 " Custom commands (conf-commands)
@@ -400,7 +403,7 @@ command! Vimrc tabe ~/.vimrc
 " ========================
 
 " Save buffers on focus lost
-autocmd FocusLost,BufLeave * :wa
+autocmd FocusLost,BufLeave * silent! update
 
 
 " fold blocks according to their indentation 
