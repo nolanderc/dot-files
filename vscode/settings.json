@@ -1,0 +1,60 @@
+{
+    "workbench.colorTheme": "Gruvbox Light (Soft)",
+    "breadcrumbs.enabled": true,
+    "editor.lineNumbers": "relative",
+    "window.zoomLevel": 0,
+    "window.titleBarStyle": "custom",
+    "editor.minimap.enabled": false,
+    "files.autoSave": "onFocusChange",
+    "editor.wordWrap": "on",
+    "editor.cursorBlinking": "solid",
+    "workbench.colorCustomizations": {
+        "[Gruvbox Light (Soft)]": {
+            "editor.selectionBackground": "#bdad7c",
+            "editorCursor.foreground": "#adad4c",
+            "statusBar.background": "#f2e6bc",
+            "statusBar.foreground": "#79750e",
+            "statusBar.border": "#cbc2a7",
+            "statusBarItem.hoverBackground": "#B7AE8E",
+            "tab.border": "#B7AE8E",
+            "tab.inactiveBackground": "#B7AE8E",
+            "tab.hoverBackground": "#d7cEaE",
+            "editorGroupHeader.tabsBackground": "#B7AE8E",
+            "titleBar.activeBackground": "#B7AE8E"
+        }
+    },
+    "editor.autoClosingBrackets": "languageDefined",
+    "editor.autoIndent": "full",
+    "editor.trimAutoWhitespace": true,
+    "editor.fontFamily": "FiraCode-Retina",
+    "editor.fontLigatures": true,
+    "debug.inlineValues": true,
+    "workbench.activityBar.visible": false,
+    "workbench.tips.enabled": false,
+    "vim.normalModeKeyBindings": [
+        {
+            "before": [
+                "K"
+            ],
+            "commands": [
+                "editor.action.showHover"
+            ]
+        }
+    ],
+    "vim.autoindent": true,
+    "vim.statusBarColorControl": false,
+    "editor.renderWhitespace": "boundary",
+    "editor.suggest.localityBonus": true,
+    "editor.suggestSelection": "recentlyUsedByPrefix",
+    "editor.formatOnSave": true,
+    // Word wrap on 100 columns
+    "editor.wordWrapColumn": 100,
+    "editor.rulers": [
+        100
+    ],
+    "vim.textwidth": 100,
+    "rust-analyzer.enableEnhancedTyping": false,
+    "rust-analyzer.useClientWatching": true,
+    "rust-analyzer.displayInlayHints": false,
+    "rust-analyzer.enableCargoWatchOnStartup": "disabled"
+}

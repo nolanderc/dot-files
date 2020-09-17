@@ -226,7 +226,7 @@ set undodir=~/.vim/undodir
 
 
 " Disable code folding
-set nofoldenable
+autocmd BufEnter * set nofoldenable
 
 " Highligh code over 100 column limit
 highlight OverLength ctermbg=red ctermfg=NONE guibg=#592929
@@ -404,7 +404,3 @@ command! Vimrc tabe ~/.vimrc
 
 " Save buffers on focus lost
 autocmd FocusLost,BufLeave * silent! update
-
-
-" fold blocks according to their indentation 
-set foldmethod=indent
