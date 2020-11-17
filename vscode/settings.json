@@ -1,5 +1,5 @@
 {
-    "workbench.colorTheme": "Gruvbox Light (Soft)",
+    "workbench.colorTheme": "Gruvbox Dark (Hard)",
     "breadcrumbs.enabled": true,
     "editor.lineNumbers": "relative",
     "window.zoomLevel": 0,
@@ -39,6 +39,15 @@
             "commands": [
                 "editor.action.showHover"
             ]
+        },
+        {
+            "before": [
+                "Q"
+            ],
+            "after": [
+                "@",
+                "q"
+            ]
         }
     ],
     "vim.autoindent": true,
@@ -46,7 +55,7 @@
     "editor.renderWhitespace": "boundary",
     "editor.suggest.localityBonus": true,
     "editor.suggestSelection": "recentlyUsedByPrefix",
-    "editor.formatOnSave": true,
+    "editor.formatOnSave": false,
     // Word wrap on 100 columns
     "editor.wordWrapColumn": 100,
     "editor.rulers": [
@@ -56,5 +65,6 @@
     "rust-analyzer.enableEnhancedTyping": false,
     "rust-analyzer.useClientWatching": true,
     "rust-analyzer.displayInlayHints": false,
-    "rust-analyzer.enableCargoWatchOnStartup": "disabled"
-}
+    "rust-analyzer.enableCargoWatchOnStartup": "disabled",
+    "liveshare.nameTagVisibility": "Never"
+},
