@@ -28,3 +28,4 @@ nmap gy <Plug>(coc-type-definition)
 nmap gi <Plug>(coc-implementation)
 nmap gr <Plug>(coc-references)
 
+command! CR Cargo run

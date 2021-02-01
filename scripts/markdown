@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo "Build: started"
+pandoc --standalone --citeproc $@ || { echo "build failed"; exit 1; }
+echo "Build: complete"
+

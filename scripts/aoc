@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if [ "$#" -ne 2 ]; then
+    echo "usage: aoc <year> <day>"
+    exit 1
+fi
+
+year=$1
+day=$2
+
+URL="https://adventofcode.com/$year/day/$day/input"
+
+curl $URL -o input.txt --cookie "session=$AOC_SESSION"
+

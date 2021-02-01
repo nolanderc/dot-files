@@ -7,6 +7,9 @@ set encoding=utf-8
 let xml_use_html = 1
 let xml_use_xhtml = 1
 
+
+let g:python3_host_prog="/usr/local/bin/python3"
+
 " Load the plugin manager
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
   silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -22,6 +25,10 @@ Plug 'morhetz/gruvbox'
 
 
 " === Languages ===
+Plug 'bfrg/vim-cpp-modern'
+
+Plug 'jparise/vim-graphql'
+
 Plug 'drmingdrmer/vim-syntax-markdown'
 
 Plug 'mustache/vim-mustache-handlebars'
@@ -77,6 +84,9 @@ Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'tpope/vim-obsession'
 
 Plug 'amerlyq/vim-focus-autocmd'
+
+" === Utility ===
+Plug 'tpope/vim-fugitive'
 
 " Stop loading plugins
 call plug#end()
@@ -383,6 +393,9 @@ noremap <expr> I InsertOnIndentation('I')
 " Select the current line (but ignoring whitespace)
 nnoremap - ^vg_
 
+" Yank to clipboard
+vmap <leader>y "+y
+nmap <leader>y "+yy
 
 " ========================
 " Custom commands (conf-commands)
