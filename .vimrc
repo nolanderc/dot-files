@@ -7,8 +7,14 @@ set encoding=utf-8
 let xml_use_html = 1
 let xml_use_xhtml = 1
 
+" Only select the contents of the argument, ignoring whitespace
+let g:targets_aiAI = 'aIAi'
 
 let g:python3_host_prog="/usr/local/bin/python3"
+
+" Highlight everything
+let g:python_highlight_all = 1
+let g:python_highlight_space_errors = 0
 
 " Load the plugin manager
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
@@ -25,6 +31,15 @@ Plug 'morhetz/gruvbox'
 
 
 " === Languages ===
+
+Plug 'BeneCollyridam/futhark-vim'
+
+Plug 'tbastos/vim-lua'
+
+Plug 'vim-python/python-syntax'
+
+Plug 'petRUShka/vim-opencl'
+
 Plug 'bfrg/vim-cpp-modern'
 
 Plug 'jparise/vim-graphql'
@@ -60,7 +75,9 @@ Plug 'vim-scripts/DoxygenToolkit.vim'
 Plug 'tikhomirov/vim-glsl'
 
 " === Completion ===
+if !(exists('g:vscode'))
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+endif
 
 " === Snippets ===
 Plug 'sirver/ultisnips'
@@ -77,7 +94,7 @@ Plug 'tpope/vim-repeat'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'godlygeek/tabular'
 Plug 'cohama/lexima.vim'
-Plug 'PeterRincker/vim-argumentative'
+Plug 'wellle/targets.vim'
 
 " === General ===
 Plug 'tmux-plugins/vim-tmux-focus-events'
@@ -317,8 +334,10 @@ noremap [q :Cprev<CR>
 noremap ]q :Cnext<CR>
 
 " Search for files in current directory
+if (!exists('g:vscode'))
 noremap <Leader>o :Files<CR>
 noremap <Leader>O :Rg<CR>
+endif
 
 " Edit a file relative to current file
 noremap <Leader>t :tabe <C-R>=expand("%:~:.:h") . "/" <CR>
@@ -342,12 +361,14 @@ autocmd FileType rust nmap <Leader>d /dbg!(<CR>dt(ds)
 " Enclose in dbg! macro
 autocmd FileType rust vmap <Leader>d S)idbg!<ESC>
 
-" Perform code action
-nmap <silent> <Leader>e <Plug>(coc-codeaction-line)
-" Show hover information
-nmap <silent> K :call CocAction('doHover')<CR>
-" Rename current symbol
-nmap <leader>r <Plug>(coc-rename)
+if (!exists('g:vscode'))
+  " Perform code action
+  nmap <silent> <Leader>e <Plug>(coc-codeaction-line)
+  " Show hover information
+  nmap <silent> gh :call CocAction('doHover')<CR>
+  " Rename current symbol
+  nmap <leader>r <Plug>(coc-rename)
+endif
 
 noremap Q @q
 
@@ -397,6 +418,11 @@ nnoremap - ^vg_
 vmap <leader>y "+y
 nmap <leader>y "+yy
 
+" Add curly brackets to argument motion
+autocmd User targets#mappings#user call targets#mappings#extend({
+    \ 'a': {'argument': [{'o': '[({[]', 'c': '[])}]', 's': ','}]},
+    \ })
+
 " ========================
 " Custom commands (conf-commands)
 " ========================
@@ -417,3 +443,9 @@ command! Vimrc tabe ~/.vimrc
 
 " Save buffers on focus lost
 autocmd FocusLost,BufLeave * silent! update
+
+if (exists('g:vscode'))
+    nnoremap gd :call VSCodeCall('editor.action.revealDefinition')<CR>
+    nnoremap <leader>r :call VSCodeCall('editor.action.rename')<CR>
+    nnoremap <leader>f :call VSCodeCall('editor.action.formatDocument')<CR>
+endif
