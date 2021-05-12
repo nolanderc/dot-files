@@ -76,8 +76,16 @@ Plug 'tikhomirov/vim-glsl'
 
 " === Completion ===
 if !(exists('g:vscode'))
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 endif
+
+Plug 'neovim/nvim-lspconfig'
+
+" Extensions to built-in LSP, for example, providing type inlay hints
+Plug 'nvim-lua/lsp_extensions.nvim'
+
+" Autocompletion framework for LSP
+Plug 'hrsh7th/nvim-compe'
 
 " === Snippets ===
 Plug 'sirver/ultisnips'
@@ -97,10 +105,7 @@ Plug 'cohama/lexima.vim'
 Plug 'wellle/targets.vim'
 
 " === General ===
-Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'tpope/vim-obsession'
-
-Plug 'amerlyq/vim-focus-autocmd'
 
 " === Utility ===
 Plug 'tpope/vim-fugitive'
@@ -114,10 +119,36 @@ filetype plugin on
 " Configure Plugins (conf-plugin)
 " ========================
 
-" Disable scratch preview
-set completeopt-=preview
+" Set the current theme
+syntax on
+set termguicolors
+set bg=dark
+let g:gruvbox_italic=1
+colorscheme gruvbox
 
-" imap <c-space> <Plug>(asyncomplete_force_refresh)
+" Set the color of the gutter
+highlight SignColumn        ctermbg=NONE guibg=NONE
+highlight GruvboxRedSign    ctermbg=NONE guibg=NONE
+highlight GruvboxYellowSign ctermbg=NONE guibg=NONE
+highlight GruvboxGreenSign  ctermbg=NONE guibg=NONE
+highlight GruvboxBlueSign   ctermbg=NONE guibg=NONE
+highlight GruvboxPurpleSign ctermbg=NONE guibg=NONE
+highlight GruvboxAquaSign   ctermbg=NONE guibg=NONE
+
+highlight CursorLineNr guifg=#7b6e65 guibg=NONE
+
+" Set the color of tabs
+highlight TabLine cterm=NONE gui=NONE guifg=#7b6e65 guibg=NONE
+highlight TabLineFill ctermbg=NONE guibg=NONE
+highlight TabLineSel cterm=italic gui=italic ctermbg=NONE guibg=NONE
+
+" Make Rust Doc-Comments italics
+highlight Special cterm=italic gui=italic ctermfg=130 guifg=#af5f00
+
+
+" Make the hightlight color less distracting
+highlight QuickFixLine cterm=italic,bold ctermfg=NONE ctermbg=NONE
+
 
 let g:UltiSnipsExpandTrigger = '<tab>'
 let g:UltiSnipsJumpForwardTrigger = '<tab>'
@@ -147,22 +178,78 @@ autocmd BufReadPost *.rs setlocal filetype=rust
 autocmd BufNewFile,BufEnter *.pl setlocal filetype=prolog
 
 " LANGUAGE SERVER
-" Start the Rust Language Server
-autocmd User lsp_setup call lsp#register_server({
-        \ 'name': 'rls',
-        \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
-        \ 'whitelist': ['rust'],
-        \ })
 
-let g:lsp_diagnostics_enabled = 0
+" Set completeopt to have a better completion experience
+" :help completeopt
+" menuone: popup even when there's only one match
+" noinsert: Do not insert text until a selection is made
+" noselect: Do not select, force user to select one from the menu
+set completeopt=menuone,noinsert,noselect
+
+" Disable scratch preview
+" set completeopt-=preview
+
+" Initialize LSP
+lua <<EOF
+
+-- nvim_lsp object
+local nvim_lsp = require'lspconfig'
+
+-- Enable rust_analyzer
+nvim_lsp.rust_analyzer.setup({})
+
+require'compe'.setup({
+    enabled = true,
+    source = {
+        path = true,
+        buffer = true,
+        nvim_lsp = true,
+    },
+})
+
+-- Enable diagnostics
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    virtual_text = true,
+    signs = true,
+    update_in_insert = true,
+  }
+)
+
+EOF
+
+" Code navigation shortcuts
+nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> gh     <cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> gH <cmd>lua vim.lsp.buf.signature_help()<CR>
+nnoremap <silent> gR    <cmd>lua vim.lsp.buf.references()<CR>
+
+nnoremap <silent> ga    <cmd>lua vim.lsp.buf.code_action()<CR>
+nnoremap <silent> gr    <cmd>lua vim.lsp.buf.rename()<CR>
+
+inoremap <silent><expr> <Tab> compe#confirm('<Tab>')
 
 
+" Set updatetime for CursorHold
+" 300ms of no cursor movement to trigger CursorHold
+set updatetime=300
+" Show diagnostic popup on cursor hold
+autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
+
+" Go to next/previous error
+nnoremap <silent> gp <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
+nnoremap <silent> gn <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
+
+" have a fixed column for the diagnostics to appear in
+" this removes the jitter when warnings/errors flow in
 set signcolumn=no
 
 
-" COBOL
-let cobol_legacy_code = 1
-unlet cobol_legacy_code
+" Enable type inlay hints
+autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *
+\ lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Comment", enabled = {"TypeHint", "ChainingHint", "ParameterHint"} }
+
 
 
 " C++
@@ -212,36 +299,6 @@ set showbreak=\ \ " Indent wrapped lines by two spaces
 " Disable search highlight
 set nohlsearch
 set incsearch
-
-" Set the current theme
-syntax on
-set termguicolors
-set bg=dark
-let g:gruvbox_italic=1
-colorscheme gruvbox
-
-" Set the color of the gutter
-highlight SignColumn        ctermbg=NONE guibg=NONE
-highlight GruvboxRedSign    ctermbg=NONE guibg=NONE
-highlight GruvboxYellowSign ctermbg=NONE guibg=NONE
-highlight GruvboxGreenSign  ctermbg=NONE guibg=NONE
-highlight GruvboxBlueSign   ctermbg=NONE guibg=NONE
-highlight GruvboxPurpleSign ctermbg=NONE guibg=NONE
-highlight GruvboxAquaSign   ctermbg=NONE guibg=NONE
-
-highlight CursorLineNr guifg=#7b6e65 guibg=NONE
-
-" Set the color of tabs
-highlight TabLine cterm=NONE gui=NONE guifg=#7b6e65 guibg=NONE
-highlight TabLineFill ctermbg=NONE guibg=NONE
-highlight TabLineSel cterm=italic gui=italic ctermbg=NONE guibg=NONE
-
-" Make Rust Doc-Comments italics
-highlight Special cterm=italic gui=italic ctermfg=130 guifg=#af5f00
-
-
-" Make the hightlight color less distracting
-highlight QuickFixLine cterm=italic,bold ctermfg=NONE ctermbg=NONE
 
 
 " Set relative line numbers
@@ -361,15 +418,6 @@ autocmd FileType rust nmap <Leader>d /dbg!(<CR>dt(ds)
 " Enclose in dbg! macro
 autocmd FileType rust vmap <Leader>d S)idbg!<ESC>
 
-if (!exists('g:vscode'))
-  " Perform code action
-  nmap <silent> <Leader>e <Plug>(coc-codeaction-line)
-  " Show hover information
-  nmap <silent> gh :call CocAction('doHover')<CR>
-  " Rename current symbol
-  nmap <leader>r <Plug>(coc-rename)
-endif
-
 noremap Q @q
 
 " Repeat last macro
@@ -449,3 +497,4 @@ if (exists('g:vscode'))
     nnoremap <leader>r :call VSCodeCall('editor.action.rename')<CR>
     nnoremap <leader>f :call VSCodeCall('editor.action.formatDocument')<CR>
 endif
+

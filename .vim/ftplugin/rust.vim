@@ -22,10 +22,3 @@ vnoremap Sr <ESC>`<iResult<<ESC>`>7la><ESC>
 " Delete surrounding wrapper
 " Option<T|>    =>    T|
 nnoremap dso vi><ESC>`>lx`<hvbd
-
-nmap gd <Plug>(coc-definition)
-nmap gy <Plug>(coc-type-definition)
-nmap gi <Plug>(coc-implementation)
-nmap gr <Plug>(coc-references)
-
-command! CR Cargo run
