@@ -16,6 +16,9 @@ let g:python3_host_prog="/usr/local/bin/python3"
 let g:python_highlight_all = 1
 let g:python_highlight_space_errors = 0
 
+" Always insert new line on enter
+let g:lexima_accept_pum_with_enter = 0
+
 " Load the plugin manager
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
   silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -31,6 +34,10 @@ Plug 'morhetz/gruvbox'
 
 
 " === Languages ===
+
+Plug 'lepture/vim-jinja'
+
+Plug 'alvan/vim-closetag'
 
 Plug 'BeneCollyridam/futhark-vim'
 
@@ -68,17 +75,11 @@ Plug 'pest-parser/pest.vim'
 Plug 'JuliaEditorSupport/julia-vim'
 Plug 'daeyun/vim-matlab'
 
-Plug 'tpope/vim-ragtag'
-
 Plug 'vim-scripts/DoxygenToolkit.vim'
 
 Plug 'tikhomirov/vim-glsl'
 
 " === Completion ===
-if !(exists('g:vscode'))
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
-endif
-
 Plug 'neovim/nvim-lspconfig'
 
 " Extensions to built-in LSP, for example, providing type inlay hints
@@ -88,8 +89,8 @@ Plug 'nvim-lua/lsp_extensions.nvim'
 Plug 'hrsh7th/nvim-compe'
 
 " === Snippets ===
-Plug 'sirver/ultisnips'
-Plug 'honza/vim-snippets'
+" Plug 'sirver/ultisnips'
+" Plug 'honza/vim-snippets'
 
 " === Files ===
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -101,7 +102,11 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'godlygeek/tabular'
+
+" Auto close brackets
 Plug 'cohama/lexima.vim'
+
+" Delete inside argument
 Plug 'wellle/targets.vim'
 
 " === General ===
@@ -138,9 +143,9 @@ highlight GruvboxAquaSign   ctermbg=NONE guibg=NONE
 highlight CursorLineNr guifg=#7b6e65 guibg=NONE
 
 " Set the color of tabs
-highlight TabLine cterm=NONE gui=NONE guifg=#7b6e65 guibg=NONE
-highlight TabLineFill ctermbg=NONE guibg=NONE
-highlight TabLineSel cterm=italic gui=italic ctermbg=NONE guibg=NONE
+highlight TabLine       gui=NONE  guifg=gray    guibg=bg cterm=NONE  ctermfg=gray    ctermbg=bg
+highlight TabLineFill   gui=NONE  guifg=gray    guibg=bg cterm=NONE  ctermfg=gray    ctermbg=bg
+highlight TabLineSel    gui=NONE  guifg=orange  guibg=10 cterm=NONE  ctermfg=darkyellow  ctermbg=10
 
 " Make Rust Doc-Comments italics
 highlight Special cterm=italic gui=italic ctermfg=130 guifg=#af5f00
@@ -172,10 +177,9 @@ let g:tex_conceal='abdmgs'
 set conceallevel=1
 
 
-" RUST
-" Set files ending with *.rs to rust source
 autocmd BufReadPost *.rs setlocal filetype=rust
 autocmd BufNewFile,BufEnter *.pl setlocal filetype=prolog
+autocmd BufReadPost *.metal setlocal filetype=metal
 
 " LANGUAGE SERVER
 
@@ -195,8 +199,18 @@ lua <<EOF
 -- nvim_lsp object
 local nvim_lsp = require'lspconfig'
 
+local on_attach = function()
+    require'signatures'.on_attach({
+        follow_cursor = true,
+    })
+    require'renaming'.on_attach({})
+    require'code_action'.on_attach({})
+end
+
+
 -- Enable rust_analyzer
-nvim_lsp.rust_analyzer.setup({})
+nvim_lsp.rust_analyzer.setup({ on_attach = on_attach })
+nvim_lsp.pyright.setup({ on_attach = on_attach })
 
 require'compe'.setup({
     enabled = true,
@@ -224,18 +238,23 @@ nnoremap <silent> gh     <cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
 nnoremap <silent> gH <cmd>lua vim.lsp.buf.signature_help()<CR>
 nnoremap <silent> gR    <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> gI    <cmd>lua vim.lsp.buf.incoming_calls()<CR>
+
+nnoremap <silent> gi    <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>
+
+" nnoremap <silent> gr    <cmd>lua vim.lsp.buf.rename()<CR>
+nnoremap <silent> gr    <cmd>lua require'renaming'.rename()<CR>
 
 nnoremap <silent> ga    <cmd>lua vim.lsp.buf.code_action()<CR>
-nnoremap <silent> gr    <cmd>lua vim.lsp.buf.rename()<CR>
+vnoremap <silent> ga    <cmd>lua vim.lsp.buf.range_code_action()<CR>
+
+" nnoremap <silent> ga    <cmd>lua require'code_action'.code_action()<CR>
+
+nnoremap <silent> <leader>f <cmd>lua vim.lsp.buf.formatting()<CR>
+vnoremap <silent> <leader>f <cmd>lua vim.lsp.buf.range_formatting()<CR>
 
 inoremap <silent><expr> <Tab> compe#confirm('<Tab>')
 
-
-" Set updatetime for CursorHold
-" 300ms of no cursor movement to trigger CursorHold
-set updatetime=300
-" Show diagnostic popup on cursor hold
-autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
 
 " Go to next/previous error
 nnoremap <silent> gp <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
@@ -409,9 +428,6 @@ vnoremap <Leader>n y:tabe <C-R>=expand("%:~:.:r") . "/" <CR><C-R>"
 vnoremap <C-r> "hy:%s/<C-r>h/<C-r>h/g<left><left>
 
 
-" Format file
-autocmd FileType rust nmap <Leader>f :RustFmt<CR>
-
 " Remove dbg! macro 
 autocmd FileType rust nmap <Leader>d /dbg!(<CR>dt(ds)
 
@@ -497,4 +513,5 @@ if (exists('g:vscode'))
     nnoremap <leader>r :call VSCodeCall('editor.action.rename')<CR>
     nnoremap <leader>f :call VSCodeCall('editor.action.formatDocument')<CR>
 endif
+
 

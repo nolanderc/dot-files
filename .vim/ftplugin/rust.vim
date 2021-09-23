@@ -11,14 +11,11 @@ set fo+=t
 vnoremap So <ESC>`<iOption<<ESC>`>7la><ESC>
 vmap SO So
 
-" Surround T with Result<T, |>
-" T|    =>   Result<T, |>
-vnoremap SR <ESC>`<iResult<<ESC>`>7la, ><ESC>i
-
-" Surround selected text with Result<?>|
-" T|    =>   Result<T>|
-vnoremap Sr <ESC>`<iResult<<ESC>`>7la><ESC>
-
 " Delete surrounding wrapper
-" Option<T|>    =>    T|
-nnoremap dso vi><ESC>`>lx`<hvbd
+"   anyhow::Result<T|>    =>    T|
+nmap dso ds>hv?\v\w+(::\w+)<CR>d
+
+
+" Perform a quickfix on the current line
+nnoremap <silent> gf <cmd>lua vim.lsp.buf.code_action({ diagonstics = {}, only = {"quickfix"} })<CR>
+

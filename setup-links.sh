@@ -2,14 +2,20 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
-# Create neovim directory, and link configuration files
-mkdir -p ~/.vim/
-ln -s $DIR/.vimrc ~/.vimrc
-ln -s $DIR/.vim/ftplugin/ ~/.vim/ftplugin
+function link_directory() {
+    mkdir -p $1
+    ln -s $DIR/.vim/ftplugin/ $1/ftplugin
+    ln -s $DIR/.vim/ftdetect/ $1/ftdetect
+    ln -s $DIR/.vim/syntax/ $1/syntax
+}
 
-mkdir -p ~/.config/nvim/
+# Create vim directory, and link configuration files
+link_directory "$HOME/.vim/"
+ln -s $DIR/.vimrc ~/.vimrc
+
+# Create neovim directory, and link configuration files
+link_directory "$HOME/.config/nvim/"
 ln -s $DIR/.vimrc ~/.config/nvim/init.vim
-ln -s $DIR/.vim/ftplugin/ ~/.config/nvim/ftplugin
 
 # Link TMUX configuration
 ln -s $DIR/.tmux.conf ~/.tmux.conf
