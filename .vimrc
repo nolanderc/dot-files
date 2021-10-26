@@ -35,6 +35,8 @@ Plug 'morhetz/gruvbox'
 
 " === Languages ===
 
+Plug 'fladson/vim-kitty'
+
 Plug 'lepture/vim-jinja'
 
 Plug 'alvan/vim-closetag'
@@ -87,6 +89,9 @@ Plug 'nvim-lua/lsp_extensions.nvim'
 
 " Autocompletion framework for LSP
 Plug 'hrsh7th/nvim-compe'
+
+" Show signatures
+Plug 'ray-x/lsp_signature.nvim'
 
 " === Snippets ===
 " Plug 'sirver/ultisnips'
@@ -150,9 +155,15 @@ highlight TabLineSel    gui=NONE  guifg=orange  guibg=10 cterm=NONE  ctermfg=dar
 " Make Rust Doc-Comments italics
 highlight Special cterm=italic gui=italic ctermfg=130 guifg=#af5f00
 
-
 " Make the hightlight color less distracting
 highlight QuickFixLine cterm=italic,bold ctermfg=NONE ctermbg=NONE
+
+" Set background color of floating windows
+highlight NormalFloat ctermbg=bg guibg=#202020
+highlight FloatBorder ctermbg=NONE guibg=#202020
+
+" Change highlighting of operators
+highlight Operator guifg=orange
 
 
 let g:UltiSnipsExpandTrigger = '<tab>'
@@ -193,18 +204,27 @@ set completeopt=menuone,noinsert,noselect
 " Disable scratch preview
 " set completeopt-=preview
 
+" ==============================
 " Initialize LSP
+" ==============================
 lua <<EOF
 
 -- nvim_lsp object
 local nvim_lsp = require'lspconfig'
 
 local on_attach = function()
-    require'signatures'.on_attach({
-        follow_cursor = true,
-    })
+    -- require'signatures'.on_attach({
+    --     follow_cursor = true,
+    -- })
     require'renaming'.on_attach({})
     require'code_action'.on_attach({})
+    require'lsp_signature'.on_attach({
+        hint_prefix = "",
+        timer_interval = 10,
+        doc_lines = 0,
+        transpancy = nil,
+        floating_window = false,
+    })
 end
 
 
@@ -225,7 +245,7 @@ require'compe'.setup({
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
     virtual_text = true,
-    signs = true,
+    signs = false,
     update_in_insert = true,
   }
 )
@@ -321,7 +341,7 @@ set incsearch
 
 
 " Set relative line numbers
-set number relativenumber
+set nonumber norelativenumber
 
 " Enable persintent undo history
 set undofile
@@ -412,7 +432,8 @@ noremap ]q :Cnext<CR>
 " Search for files in current directory
 if (!exists('g:vscode'))
 noremap <Leader>o :Files<CR>
-noremap <Leader>O :Rg<CR>
+noremap <Leader>F :Rg<CR>
+noremap <Leader>O :Files %:h<CR>
 endif
 
 " Edit a file relative to current file
