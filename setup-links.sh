@@ -8,6 +8,7 @@ function link_directory() {
     ln -s $DIR/.vim/ftdetect/ $1/ftdetect
     ln -s $DIR/.vim/syntax/ $1/syntax
     ln -s $DIR/.vim/indent/ $1/indent
+    ln -s $DIR/.vim/lua/ $1/lua
 }
 
 # Create vim directory, and link configuration files
