@@ -4,23 +4,22 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 function link_directory() {
     mkdir -p $1
-    ln -s $DIR/.vim/ftplugin/ $1/ftplugin
-    ln -s $DIR/.vim/ftdetect/ $1/ftdetect
-    ln -s $DIR/.vim/syntax/ $1/syntax
-    ln -s $DIR/.vim/indent/ $1/indent
-    ln -s $DIR/.vim/lua/ $1/lua
+    ln -sf $DIR/.vim/ftplugin/ $1/ftplugin
+    ln -sf $DIR/.vim/ftdetect/ $1/ftdetect
+    ln -sf $DIR/.vim/syntax/ $1/syntax
+    ln -sf $DIR/.vim/indent/ $1/indent
 }
 
 # Create vim directory, and link configuration files
 link_directory "$HOME/.vim/"
-ln -s $DIR/.vimrc ~/.vimrc
+ln -sf $DIR/.vimrc ~/.vimrc
 
 # Link TMUX configuration
-ln -s $DIR/.tmux.conf "$HOME/.tmux.conf"
+ln -sf $DIR/.tmux.conf "$HOME/.tmux.conf"
 
 # Link Kitty configuration
-ln -s $DIR/kitty/ "$HOME/.config/kitty"
+ln -sf $DIR/kitty/ "$HOME/.config/kitty"
 
 # Link neovim configuration
-ln -s "$DIR/nvim/" "$HOME/.config/nvim"
+ln -sf "$DIR/nvim/" "$HOME/.config/nvim"
 

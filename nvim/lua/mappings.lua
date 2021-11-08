@@ -58,6 +58,5 @@ noremap <expr> A InsertOnIndentation('A')
 noremap <expr> I InsertOnIndentation('I')
 ]]
 
-
 -- Select the current line (but ignoring whitespace)
 nmap([[-]], [[^vg_]])
