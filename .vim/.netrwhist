@@ -1,6 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =4
-let g:netrw_dirhist_1='/Users/christofer/School/inda/thegame/logic/game/src/render'
-let g:netrw_dirhist_2='/Users/christofer/dev/portfolio/public'
-let g:netrw_dirhist_3='/Users/christofer/dev/portfolio'
-let g:netrw_dirhist_4='/Users/christofer/dev/portfolio/public'

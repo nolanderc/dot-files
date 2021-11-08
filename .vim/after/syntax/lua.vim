@@ -1,3 +1,0 @@
-
-hi luaOperator guifg=Orange
-
