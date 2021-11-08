@@ -15,13 +15,12 @@ function link_directory() {
 link_directory "$HOME/.vim/"
 ln -s $DIR/.vimrc ~/.vimrc
 
-# Create neovim directory, and link configuration files
-link_directory "$HOME/.config/nvim/"
-ln -s $DIR/.vimrc ~/.config/nvim/init.vim
-
 # Link TMUX configuration
 ln -s $DIR/.tmux.conf "$HOME/.tmux.conf"
 
 # Link Kitty configuration
 ln -s $DIR/kitty/ "$HOME/.config/kitty"
+
+# Link neovim configuration
+ln -s "$DIR/nvim/" "$HOME/.config/nvim"
 
