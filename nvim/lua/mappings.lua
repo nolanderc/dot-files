@@ -8,6 +8,14 @@ function nmap(keys, command, opts) map('n', keys, command, opts) end
 function imap(keys, command, opts) map('i', keys, command, opts) end
 function vmap(keys, command, opts) map('v', keys, command, opts) end
 
+-- Copy selected range to clipboard
+vmap([[<leader>y]], [["+y]])
+nmap([[<leader>y]], [[^vg_"+y]])
+
+-- Repeat the macro recording in `q` abc
+nmap([[Q]], [[@q]])
+vmap([[Q]], [[:normal @q<CR>]])
+
 -- Fuzzy find files relative to working directory
 nmap([[<leader>o]], [[:Telescope find_files<CR>]])
 -- Fuzzy find relative to current file
@@ -21,7 +29,7 @@ nmap([[<Leader>t]], [[:tabe <C-R>=expand("%:~:.:h") . "/" <CR>]], { silent = fal
 nmap([[<Leader>n]], [[:tabe <C-R>=expand("%:~:.:r") . "/" <CR>]], { silent = false })
 
 -- Replace visually selected text in file
-nmap([[<C-r>]], [["hy:%s/<C-r>h/<C-r>h/g<left><left>]])
+vmap([[<C-r>]], [["hy:%s/<C-r>h/<C-r>h/g<left><left>]])
 
 -- Move to adjacent windows using `Ctrl+motion`
 nmap([[<C-h>]], [[<C-w>h]])
@@ -45,6 +53,10 @@ nmap([[<leader>f]], [[<cmd>lua vim.lsp.buf.formatting()<CR>]])
 vmap([[ga]], [[<cmd>lua vim.lsp.buf.range_code_action()<CR>]])
 vmap([[<leader>f]], [[<cmd>lua vim.lsp.buf.range_formatting()<CR>]])
 
+-- Goto diagnostics
+nmap([[gn]], [[<cmd>lua vim.lsp.diagnostic.goto_next()<CR>]])
+nmap([[gp]], [[<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>]])
+
 -- Start inserting on right indentation
 vim.cmd [[
 function! InsertOnIndentation(default_action)
@@ -59,4 +71,5 @@ noremap <expr> I InsertOnIndentation('I')
 ]]
 
 -- Select the current line (but ignoring whitespace)
-nmap([[-]], [[^vg_]])
+nmap([[-]], [[g_v^]])
+
