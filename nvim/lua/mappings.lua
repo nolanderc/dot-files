@@ -7,6 +7,10 @@ end
 function nmap(keys, command, opts) map('n', keys, command, opts) end
 function imap(keys, command, opts) map('i', keys, command, opts) end
 function vmap(keys, command, opts) map('v', keys, command, opts) end
+function omap(keys, command, opts) map('o', keys, command, opts) end
+function xmap(keys, command, opts) map('x', keys, command, opts) end
+
+vim.g.mapleader = " "
 
 -- Copy selected range to clipboard
 vmap([[<leader>y]], [["+y]])
@@ -29,7 +33,7 @@ nmap([[<Leader>t]], [[:tabe <C-R>=expand("%:~:.:h") . "/" <CR>]], { silent = fal
 nmap([[<Leader>n]], [[:tabe <C-R>=expand("%:~:.:r") . "/" <CR>]], { silent = false })
 
 -- Replace visually selected text in file
-vmap([[<C-r>]], [["hy:%s/<C-r>h/<C-r>h/g<left><left>]])
+vmap([[<C-r>]], [["hy:%s/<C-r>h/<C-r>h/g<left><left>]], { silent = false })
 
 -- Move to adjacent windows using `Ctrl+motion`
 nmap([[<C-h>]], [[<C-w>h]])
@@ -37,25 +41,30 @@ nmap([[<C-j>]], [[<C-w>j]])
 nmap([[<C-k>]], [[<C-w>k]])
 nmap([[<C-l>]], [[<C-w>l]])
 
+-- Select tabs
+nmap([[L]], [[gt]])
+nmap([[H]], [[gT]])
 
 -- LSP integration
-nmap([[gd]], [[<cmd>lua vim.lsp.buf.definition()<CR>]])
+nmap([[gd]], [[:Telescope lsp_definitions timeout=1000<CR>]])
 nmap([[gh]], [[<cmd>lua vim.lsp.buf.hover()<CR>]])
 nmap([[gD]], [[<cmd>lua vim.lsp.buf.implementation()<CR>]])
 nmap([[gH]], [[<cmd>lua vim.lsp.buf.signature_help()<CR>]])
 nmap([[gR]], [[<cmd>lua vim.lsp.buf.references()<CR>]])
 nmap([[gI]], [[<cmd>lua vim.lsp.buf.incoming_calls()<CR>]])
-nmap([[gi]], [[<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>]])
+nmap([[gi]], [[<cmd>lua vim.diagnostic.open_float()<CR>]])
 nmap([[gr]], [[<cmd>lua require'renaming'.rename()<CR>]])
-nmap([[ga]], [[<cmd>lua vim.lsp.buf.code_action()<CR>]])
+nmap([[ga]], [[:Telescope lsp_code_actions timeout=1000<CR>]])
+nmap([[gs]], [[:Telescope lsp_document_symbols timeout=1000<CR>]])
+nmap([[gS]], [[:Telescope lsp_workspace_symbols timeout=1000<CR>]])
 nmap([[<leader>f]], [[<cmd>lua vim.lsp.buf.formatting()<CR>]])
 
 vmap([[ga]], [[<cmd>lua vim.lsp.buf.range_code_action()<CR>]])
 vmap([[<leader>f]], [[<cmd>lua vim.lsp.buf.range_formatting()<CR>]])
 
 -- Goto diagnostics
-nmap([[gn]], [[<cmd>lua vim.lsp.diagnostic.goto_next()<CR>]])
-nmap([[gp]], [[<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>]])
+nmap([[gn]], [[<cmd>lua vim.diagnostic.goto_next()<CR>]])
+nmap([[gp]], [[<cmd>lua vim.diagnostic.goto_prev()<CR>]])
 
 -- Start inserting on right indentation
 vim.cmd [[
@@ -73,3 +82,11 @@ noremap <expr> I InsertOnIndentation('I')
 -- Select the current line (but ignoring whitespace)
 nmap([[-]], [[g_v^]])
 
+-- Argument text object
+nmap([[>.]], [[<Plug>Argumentative_MoveRight]], {noremap=false})
+
+xmap([[ia]], [[<Plug>Argumentative_InnerTextObject]], {noremap = false})
+xmap([[aa]], [[<Plug>Argumentative_OuterTextObject]], {noremap = false})
+
+omap([[ia]], [[<Plug>Argumentative_OpPendingInnerTextObject]], {noremap = false})
+omap([[aa]], [[<Plug>Argumentative_OpPendingOuterTextObject]], {noremap = false})

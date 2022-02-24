@@ -39,7 +39,7 @@ local function query_user(previous_name)
     api.nvim_buf_set_lines(buffer, 0, 1, false, { previous_name })
 
     local done_command = "<cmd>lua require'renaming'.query_user_done()<CR>"
-    api.nvim_buf_set_keymap(buffer, 'i', '<CR>', done_command .. "<ESC>", {})
+    api.nvim_buf_set_keymap(buffer, 'i', '<CR>', "<ESC>`^"..done_command, {})
     api.nvim_buf_set_keymap(buffer, 'n', '<CR>', done_command, {})
 
     local cancel_command = "<cmd>lua require'renaming'.query_user_cancel()<CR>"
@@ -48,7 +48,7 @@ local function query_user(previous_name)
     local window_config = {
         relative = 'cursor',
         anchor = 'SW',
-        row = -2,
+        row = 0,
         col = -1,
         width = #previous_name + 16,
         height = 1,

@@ -1,4 +1,4 @@
-
+#
 -- Shortcut to edit this file
 vim.cmd [[command! Vimrc tabe ~/.config/nvim/init.lua]]
 
@@ -31,11 +31,11 @@ vim.o.breakindent   = true   -- Indent wrapped lines to the same indentation as 
 vim.o.linebreak     = true   -- Wrap lines on whole words
 vim.o.showbreak     = "    " -- Indent wrapped lines by four spaces
 
+-- Keep cursor from going to the very top/bottom of the screen
+vim.o.scrolloff = 5
+
 -- Enable persistent undo
 vim.o.undofile = true
-
--- Setup fuzzy file finder
-require('telescope').setup()
 
 require('lsp-setup')
 require('mappings')

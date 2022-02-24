@@ -20,7 +20,7 @@ vim.cmd[[ highlight FloatBorder guibg=#202020 ]]
 
 -- Change highlighting for selected text in Telescope
 vim.cmd[[ highlight TelescopeMatching guifg=orange gui=bold ]]
-vim.cmd[[ highlight TelescopeSelection gui=bold ]]
+vim.cmd[[ highlight TelescopeSelection guifg=fg gui=bold ]]
 
 -- Change highlighting of doc comments
 vim.cmd[[ highlight rustCommentLineDoc gui=italic guifg=#d65d0e ]]
@@ -29,3 +29,12 @@ vim.cmd[[ highlight rustCommentBlockDoc gui=italic guifg=#d65d0e ]]
 -- Highlight markdown headers
 vim.cmd[[ highlight mkdHeading guifg=green ]]
 
+-- Add italic text to markdown
+vim.cmd[[ highlight htmlItalic gui=italic ]]
+
+-- Highlight the use keyword in rust correctly
+vim.cmd[[ highlight link rustTSInclude rustKeyword ]]
+
+-- Highlight operators
+vim.cmd[[ highlight Operator guifg=darkorange ]]
+vim.cmd[[ highlight link TSOperator Operator ]]

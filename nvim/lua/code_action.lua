@@ -108,6 +108,7 @@ local function query_user()
 end
 
 local function code_action(err, result)
+    vim.notify("running code action")
     if err ~= nil then
         error('failed to perform code action: ' .. err.message) 
     end
