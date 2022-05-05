@@ -37,6 +37,7 @@ vim.o.scrolloff = 5
 -- Enable persistent undo
 vim.o.undofile = true
 
+require('commands')
 require('lsp-setup')
 require('mappings')
 require('highlight')

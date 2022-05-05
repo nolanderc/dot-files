@@ -21,6 +21,8 @@ require('packer').startup(function()
 
 	use 'tpope/vim-surround'    -- Surround with braces/quotes
 	use 'tpope/vim-repeat'      -- '.'-repeat for more stuff
+    use 'tpope/vim-fugitive'
+
     use 'godlygeek/tabular'     -- Align text
     -- use 'cohama/lexima.vim'     -- Auto-close brackets
     -- use 'wellle/targets.vim'    -- More object motions (inside argument)
@@ -60,10 +62,12 @@ require('packer').startup(function()
         run = ':TSUpdate',
     }
     use 'nvim-treesitter/playground'
+
+    use 'Glench/Vim-Jinja2-Syntax'
 end)
 
 require'nvim-treesitter.configs'.setup {
-    ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+    ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
     highlight = {
         enable = true,              -- false will disable the whole extension
     },

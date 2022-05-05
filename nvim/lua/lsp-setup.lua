@@ -119,6 +119,7 @@ lsp.pyright.setup(config)
 lsp.zls.setup(config)
 lsp.cssls.setup(config)
 lsp.html.setup(config)
+lsp.metals.setup(config)
 
 -- Enable diagnostics
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
