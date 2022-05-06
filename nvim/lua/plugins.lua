@@ -18,6 +18,7 @@ autocmd User targets#mappings#user call targets#mappings#extend({
 require('packer').startup(function()
 	use 'wbthomason/packer.nvim'    -- Update package manager automatically
     use { 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/plenary.nvim' } }
+    use 'stevearc/dressing.nvim' -- nicer UI for selecting/renaming things
 
 	use 'tpope/vim-surround'    -- Surround with braces/quotes
 	use 'tpope/vim-repeat'      -- '.'-repeat for more stuff
@@ -77,21 +78,7 @@ require'nvim-treesitter.configs'.setup {
 }
 
 -- Setup fuzzy file finder
-local cursor_layout = {
-    sorting_strategy = 'ascending',
-    layout_strategy = 'cursor',
-    layout_config = {
-        height = 10,
-        width = 50,
-    },
-}
 require('telescope').setup{
-     pickers = {
-         lsp_code_actions = cursor_layout,
-         lsp_definitions = vim.tbl_extend('force', cursor_layout, {
-             layout_config = { height = 10 },
-         }),
-     },
      defaults = {
          mappings = {
              i = {
@@ -101,3 +88,22 @@ require('telescope').setup{
      }
 }
 
+-- Setup selection UI
+require('dressing').setup({
+    input = {
+        enabled = true,
+        insert_only = false,
+    },
+    select = {
+        enabled = true,
+        backend = { "telescope", "fzf", "builtin" },
+        telescope = {
+            sorting_strategy = 'ascending',
+            layout_strategy = 'cursor',
+            layout_config = {
+                height = 10,
+                width = 50,
+            },
+        },
+    },
+})
