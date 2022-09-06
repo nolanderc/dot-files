@@ -46,9 +46,14 @@ nmap([[L]], [[gt]])
 nmap([[H]], [[gT]])
 
 -- LSP integration
+
+-- Goto definition
 nmap([[gd]], [[<cmd>lua vim.lsp.buf.definition()<CR>]])
+
+-- Goto definition, but in a new tab
+nmap([[gD]], [[mt:tabe %<CR>`t<cmd>lua vim.lsp.buf.definition()<CR>]])
+
 nmap([[gh]], [[<cmd>lua vim.lsp.buf.hover()<CR>]])
-nmap([[gD]], [[<cmd>lua vim.lsp.buf.implementation()<CR>]])
 nmap([[gH]], [[<cmd>lua vim.lsp.buf.signature_help()<CR>]])
 nmap([[gR]], [[<cmd>lua vim.lsp.buf.references()<CR>]])
 nmap([[gI]], [[<cmd>lua vim.lsp.buf.incoming_calls()<CR>]])
@@ -88,3 +93,4 @@ xmap([[aa]], [[<Plug>Argumentative_OuterTextObject]], {noremap = false})
 
 omap([[ia]], [[<Plug>Argumentative_OpPendingInnerTextObject]], {noremap = false})
 omap([[aa]], [[<Plug>Argumentative_OpPendingOuterTextObject]], {noremap = false})
+

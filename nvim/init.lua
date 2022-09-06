@@ -37,6 +37,12 @@ vim.o.scrolloff = 5
 -- Enable persistent undo
 vim.o.undofile = true
 
+-- Show line numbers
+vim.o.number = true
+
+-- Disable folds
+vim.o.foldenable = false
+
 require('commands')
 require('lsp-setup')
 require('mappings')
@@ -63,3 +69,4 @@ augroup BWCCreateDir
     autocmd BufWritePre * :call g:MkNonExDir(expand('<afile>'), +expand('<abuf>'))
 augroup END
 ]]
+

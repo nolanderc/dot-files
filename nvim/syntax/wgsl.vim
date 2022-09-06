@@ -1,7 +1,7 @@
 
-if exists("b:current_syntax")
-    finish
-endif
+" if exists("b:current_syntax")
+"     finish
+" endif
 
 syn keyword wgslType void f32 i32 u32 bool
 syn keyword wgslContainerType vec2 vec3 vec4

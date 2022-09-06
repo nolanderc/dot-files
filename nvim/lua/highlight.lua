@@ -36,5 +36,5 @@ vim.cmd[[ highlight htmlItalic gui=italic ]]
 vim.cmd[[ highlight link rustTSInclude rustKeyword ]]
 
 -- Highlight operators
-vim.cmd[[ highlight Operator guifg=darkorange ]]
+vim.cmd[[ highlight Operator gui=NONE guifg=darkorange ]]
 vim.cmd[[ highlight link TSOperator Operator ]]

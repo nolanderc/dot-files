@@ -19,7 +19,7 @@ cmp.setup({
             -- require'snippy'.expand_snippet(args.body) -- For `snippy` users.
         end,
     },
-    mapping = {
+    mapping = cmp.mapping.preset.insert({
         -- ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
         -- ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
         -- ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
@@ -31,7 +31,8 @@ cmp.setup({
         -- -- Accept currently selected item. If none selected, `select` first item.
         -- -- Set `select` to `false` to only confirm explicitly selected items.
         ['<TAB>'] = cmp.mapping.confirm({ select = false }),
-    },
+        ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+    }),
     sources = cmp.config.sources({
         { name = 'nvim_lsp' },
         -- { name = 'vsnip' }, -- For vsnip users.
@@ -80,7 +81,7 @@ cmp.setup.cmdline(':', {
     sources = cmp.config.sources({
         { name = 'path' }
     }, {
-        { name = 'cmdline' }
+        { name = 'cmdline', keyword_pattern=[=[[^[:blank:]\!]*]=] }
     })
 })
 
@@ -108,11 +109,20 @@ local config = {
                 enable = true
             },
             diagnostics = {
-                disabled = {
-                    "unresolved-proc-macro",
-                }
+                -- disabled = {
+                --     "unresolved-proc-macro",
+                -- }
+            },
+            checkOnSave = {
+                command = "clippy",
             }
-        }
+        },
+        ["html"] = {
+            format = {
+                wrapAttributes = "force-aligned",
+                templating = true,
+            },
+        },
     },
 }
 

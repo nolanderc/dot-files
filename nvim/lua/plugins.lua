@@ -8,6 +8,8 @@ vim.g.lexima_accept_pum_with_enter = 0
 vim.g.python_highlight_all = 1
 vim.g.python_highlight_space_errors = 0
 
+vim.g.zig_fmt_parse_errors = 0
+
 -- Add `{ ... }` as a valid target for argument mappings
 vim.cmd [[
 autocmd User targets#mappings#user call targets#mappings#extend({
@@ -36,6 +38,9 @@ require('packer').startup(function()
 	-- use 'morhetz/gruvbox'   -- The best color scheme
     use {"ellisonleao/gruvbox.nvim", requires = {"rktjmp/lush.nvim"}}
 
+    -- Save/restore sessions
+    use 'tpope/vim-obsession'
+
     -- Completions
     use 'hrsh7th/cmp-nvim-lsp'
     use 'hrsh7th/cmp-buffer'
@@ -49,6 +54,7 @@ require('packer').startup(function()
     use 'plasticboy/vim-markdown'
     use 'cespare/vim-toml'
     use 'lervag/vimtex'
+    use 'rust-lang/rust.vim'
 
     use 'vim-python/python-syntax'
 
