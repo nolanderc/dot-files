@@ -41,6 +41,9 @@ require('packer').startup(function()
     -- Save/restore sessions
     use 'tpope/vim-obsession'
 
+    -- Comment out lines
+    use 'terrortylor/nvim-comment'
+
     -- Completions
     use 'hrsh7th/cmp-nvim-lsp'
     use 'hrsh7th/cmp-buffer'
@@ -90,8 +93,9 @@ require('telescope').setup{
              i = {
                  ['<ESC>'] = require'telescope.actions'.close,
              }
-         }
-     }
+         },
+         layout_strategy = 'vertical',
+     },
 }
 
 -- Setup selection UI
@@ -113,3 +117,5 @@ require('dressing').setup({
         },
     },
 })
+
+require('nvim_comment').setup()

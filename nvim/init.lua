@@ -1,11 +1,11 @@
-#
 -- Shortcut to edit this file
 vim.cmd [[command! Vimrc tabe ~/.config/nvim/init.lua]]
 
-require('plugins')
-
 -- Enable mouse support
 vim.o.mouse = 'a'
+
+-- Show line numbers
+vim.o.number = true
 
 -- Set the colorscheme
 vim.cmd [[syntax on]]
@@ -26,6 +26,10 @@ vim.o.shiftwidth    = 4     -- Increase/decrease indentation using 4 spaces at a
 vim.o.hlsearch  = false -- Don't highlight matches after search is completed
 vim.o.incsearch = true  -- Highlight while typing the search query
 
+ -- Search case-insensitively if the search term is lowercase
+vim.o.ignorecase = true -- Case-insensitive search
+vim.o.smartcase = true  -- Override above if search contains uppercase letters
+
 -- Line wrapping
 vim.o.breakindent   = true   -- Indent wrapped lines to the same indentation as their parent
 vim.o.linebreak     = true   -- Wrap lines on whole words
@@ -37,12 +41,10 @@ vim.o.scrolloff = 5
 -- Enable persistent undo
 vim.o.undofile = true
 
--- Show line numbers
-vim.o.number = true
-
 -- Disable folds
 vim.o.foldenable = false
 
+require('plugins')
 require('commands')
 require('lsp-setup')
 require('mappings')
@@ -52,7 +54,6 @@ require('highlight')
 vim.o.laststatus = 0
 vim.o.showmode = false
 vim.o.shortmess = vim.o.shortmess .. 'FWc';
-
 
 -- When attempting to save a file, if the directory does not exist, create it
 vim.cmd [[

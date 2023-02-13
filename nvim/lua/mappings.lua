@@ -9,12 +9,17 @@ function imap(keys, command, opts) map('i', keys, command, opts) end
 function vmap(keys, command, opts) map('v', keys, command, opts) end
 function omap(keys, command, opts) map('o', keys, command, opts) end
 function xmap(keys, command, opts) map('x', keys, command, opts) end
+function unmap(mode, keys)
+	vim.api.nvim_del_keymap(mode, keys)
+end
 
 vim.g.mapleader = " "
 
 -- Copy selected range to clipboard
 vmap([[<leader>y]], [["+y]])
 nmap([[<leader>y]], [[^vg_"+y]])
+
+nmap([[<leader>p]], [["+p]])
 
 -- Repeat the macro recording in `q` abc
 nmap([[Q]], [[@q]])
@@ -35,35 +40,45 @@ nmap([[<Leader>n]], [[:tabe <C-R>=expand("%:~:.:r") . "/" <CR>]], { silent = fal
 -- Replace visually selected text in file
 vmap([[<C-r>]], [["hy:%s/<C-r>h/<C-r>h/g<left><left>]], { silent = false })
 
--- Move to adjacent windows using `Ctrl+motion`
-nmap([[<C-h>]], [[<C-w>h]])
-nmap([[<C-j>]], [[<C-w>j]])
-nmap([[<C-k>]], [[<C-w>k]])
-nmap([[<C-l>]], [[<C-w>l]])
-
--- Select tabs
-nmap([[L]], [[gt]])
-nmap([[H]], [[gT]])
+-- Scroll the view without the cursor
+nmap([[<C-j>]], [[5<C-e>]])
+nmap([[<C-k>]], [[5<C-y>]])
 
 -- LSP integration
 
 -- Goto definition
-nmap([[gd]], [[<cmd>lua vim.lsp.buf.definition()<CR>]])
+nmap([[gd]], [[<cmd>lua require('telescope.builtin').lsp_definitions()<CR>]])
 
 -- Goto definition, but in a new tab
-nmap([[gD]], [[mt:tabe %<CR>`t<cmd>lua vim.lsp.buf.definition()<CR>]])
+nmap([[gD]], [[mt:tabe %<CR>`t<cmd>lua require('telescope.builtin').lsp_definitions()<CR>]])
 
+-- Search workspace symbols
+nmap([[<leader>s]], [[<cmd>lua require('telescope.builtin').lsp_dynamic_workspace_symbols()<CR>]])
+
+-- Search document symbols
+nmap([[<leader>S]], [[<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>]])
+
+-- List all diagnostics
+nmap([[<leader>d]], [[<cmd>lua require('telescope.builtin').diagnostics()<CR>]])
+-- List errors
+nmap([[<leader>D]], [[<cmd>lua require('telescope.builtin').diagnostics({severity_limit = 'error'})<CR>]])
+
+
+-- Show hover information on the item under the cursor
 nmap([[gh]], [[<cmd>lua vim.lsp.buf.hover()<CR>]])
+
+-- Show the signature of the current function
 nmap([[gH]], [[<cmd>lua vim.lsp.buf.signature_help()<CR>]])
-nmap([[gR]], [[<cmd>lua vim.lsp.buf.references()<CR>]])
+
+nmap([[gR]], [[<cmd>lua require('telescope.builtin').lsp_references()<CR>]])
 nmap([[gI]], [[<cmd>lua vim.lsp.buf.incoming_calls()<CR>]])
 nmap([[gi]], [[<cmd>lua vim.diagnostic.open_float()<CR>]])
 nmap([[gr]], [[<cmd>lua vim.lsp.buf.rename()<CR>]])
 nmap([[ga]], [[<cmd>lua vim.lsp.buf.code_action()<CR>]])
-nmap([[<leader>f]], [[<cmd>lua vim.lsp.buf.formatting()<CR>]])
+nmap([[<leader>f]], [[<cmd>lua vim.lsp.buf.format()<CR>]])
 
-vmap([[ga]], [[<cmd>lua vim.lsp.buf.range_code_action()<CR>]])
-vmap([[<leader>f]], [[<cmd>lua vim.lsp.buf.range_formatting()<CR>]])
+vmap([[ga]], [[<cmd>lua vim.lsp.buf.code_action()<CR>]])
+vmap([[<leader>f]], [[<cmd>lua vim.lsp.buf.format()<CR>]])
 
 -- Goto diagnostics
 nmap([[gn]], [[<cmd>lua vim.diagnostic.goto_next()<CR>]])
@@ -93,4 +108,7 @@ xmap([[aa]], [[<Plug>Argumentative_OuterTextObject]], {noremap = false})
 
 omap([[ia]], [[<Plug>Argumentative_OpPendingInnerTextObject]], {noremap = false})
 omap([[aa]], [[<Plug>Argumentative_OpPendingOuterTextObject]], {noremap = false})
+
+-- Align
+vmap([[&]], [[:Tabularize /]], { silent = false })
 

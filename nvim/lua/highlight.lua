@@ -32,9 +32,19 @@ vim.cmd[[ highlight mkdHeading guifg=green ]]
 -- Add italic text to markdown
 vim.cmd[[ highlight htmlItalic gui=italic ]]
 
--- Highlight the use keyword in rust correctly
-vim.cmd[[ highlight link rustTSInclude rustKeyword ]]
-
 -- Highlight operators
 vim.cmd[[ highlight Operator gui=NONE guifg=darkorange ]]
 vim.cmd[[ highlight link TSOperator Operator ]]
+
+-- Highlight doc comments
+vim.cmd[[ highlight SpecialComment guifg=Orange gui=italic ]]
+
+-- Fix variuous TreeSitter highlighting
+vim.cmd[[ highlight link @include Keyword ]] 
+vim.cmd[[ highlight link @variable.builtin Special ]]
+vim.cmd[[ highlight link @namespace Include ]]
+vim.cmd[[ highlight link @text.note Special ]]
+vim.cmd[[ highlight @text.warning guifg=White ]]
+vim.cmd[[ highlight link @constant Constant ]]
+vim.cmd[[ highlight link @type.qualifier @variable.builtin ]]
+
