@@ -132,6 +132,40 @@ cmp.setup.cmdline(':', {
 
 local lsp = require('lspconfig')
 
+-- Enable diagnostics
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    virtual_text = true,
+    signs = false,
+    update_in_insert = true,
+  }
+)
+
+vim.lsp.handlers["wgsl-analyzer/requestConfiguration"] = function(err, result, ctx, config)
+    return { 
+        success = true,
+        customImports = { _dummy_ = "dummy"},
+        shaderDefs = {},
+        trace = {
+            extension = false,
+            server = false,
+        },
+        inlayHints = {
+            enabled = false,
+            typeHints = false,
+            parameterHints = false,
+            structLayoutHints = false,
+            typeVerbosity = "inner",
+        },
+        diagnostics = {
+            typeErrors = true,
+            nagaParsingErrors = true,
+            nagaValidationErrors = true,
+            nagaVersion = "main",
+        }
+    }
+end
+
 function on_attach(client, bufnr)
     -- require('renaming').on_attach({})
     -- require('code_action').on_attach({})
@@ -147,7 +181,10 @@ local config = {
             },
             checkOnSave = {
                 command = "clippy",
-            }
+            },
+            cargo = {
+                target = "x86_64-pc-windows-gnu",
+            },
         },
         ["html"] = {
             format = {
@@ -164,12 +201,6 @@ lsp.zls.setup(config)
 lsp.cssls.setup(config)
 lsp.html.setup(config)
 lsp.metals.setup(config)
+lsp.glslls.setup(config)
+lsp.wgsl_analyzer.setup(config)
 
--- Enable diagnostics
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
-    virtual_text = true,
-    signs = false,
-    update_in_insert = true,
-  }
-)

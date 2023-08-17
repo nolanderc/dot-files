@@ -48,9 +48,10 @@ nmap([[<C-k>]], [[5<C-y>]])
 
 -- Goto definition
 nmap([[gd]], [[<cmd>lua require('telescope.builtin').lsp_definitions()<CR>]])
-
 -- Goto definition, but in a new tab
 nmap([[gD]], [[mt:tabe %<CR>`t<cmd>lua require('telescope.builtin').lsp_definitions()<CR>]])
+-- Goto definition, but in a split
+nmap([[g<c-d>]], [[mt:split<CR>`t<cmd>lua require('telescope.builtin').lsp_definitions()<CR>]])
 
 -- Search workspace symbols
 nmap([[<leader>s]], [[<cmd>lua require('telescope.builtin').lsp_dynamic_workspace_symbols()<CR>]])
@@ -81,8 +82,8 @@ vmap([[ga]], [[<cmd>lua vim.lsp.buf.code_action()<CR>]])
 vmap([[<leader>f]], [[<cmd>lua vim.lsp.buf.format()<CR>]])
 
 -- Goto diagnostics
-nmap([[gn]], [[<cmd>lua vim.diagnostic.goto_next()<CR>]])
-nmap([[gp]], [[<cmd>lua vim.diagnostic.goto_prev()<CR>]])
+nmap([[gn]], [[<cmd>lua vim.diagnostic.goto_next({ severity = { min = vim.diagnostic.severity.WARN } })<CR>]])
+nmap([[gp]], [[<cmd>lua vim.diagnostic.goto_prev({ severity = { min = vim.diagnostic.severity.WARN } })<CR>]])
 
 -- Start inserting on right indentation
 vim.cmd [[
@@ -110,5 +111,5 @@ omap([[ia]], [[<Plug>Argumentative_OpPendingInnerTextObject]], {noremap = false}
 omap([[aa]], [[<Plug>Argumentative_OpPendingOuterTextObject]], {noremap = false})
 
 -- Align
-vmap([[&]], [[:Tabularize /]], { silent = false })
+vmap([[|]], [[:Tabularize /]], { silent = false })
 

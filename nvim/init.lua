@@ -1,18 +1,18 @@
 -- Shortcut to edit this file
 vim.cmd [[command! Vimrc tabe ~/.config/nvim/init.lua]]
 
+-- Set the colorscheme
+vim.cmd [[syntax on]]
+vim.o.termguicolors = true
+vim.o.background = 'light'
+vim.g.gruvbox_italic = 1
+vim.cmd [[ colorscheme paperlight ]]
+
 -- Enable mouse support
 vim.o.mouse = 'a'
 
 -- Show line numbers
 vim.o.number = true
-
--- Set the colorscheme
-vim.cmd [[syntax on]]
-vim.o.termguicolors = true
-vim.o.background = 'dark'
-vim.g.gruvbox_italic = 1
-vim.cmd [[colorscheme gruvbox]]
 
 -- Save open buffers when losing focus
 vim.cmd [[autocmd FocusLost,BufLeave * silent! update]]
@@ -45,7 +45,6 @@ vim.o.undofile = true
 vim.o.foldenable = false
 
 require('plugins')
-require('commands')
 require('lsp-setup')
 require('mappings')
 require('highlight')
@@ -71,3 +70,6 @@ augroup BWCCreateDir
 augroup END
 ]]
 
+-- Recognize comments in more languages
+vim.cmd[[autocmd FileType glsl setlocal commentstring=//\ %s]]
+vim.cmd[[autocmd FileType wgsl setlocal commentstring=//\ %s]]

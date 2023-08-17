@@ -33,13 +33,13 @@ require('packer').startup(function()
     use 'PeterRincker/vim-argumentative' -- argument text object
 
     use 'neovim/nvim-lspconfig' -- LSP framework for loading LSP servers
-    use 'nvim-lua/lsp_extensions.nvim'  -- Inlay hints and more
 
 	-- use 'morhetz/gruvbox'   -- The best color scheme
-    use {"ellisonleao/gruvbox.nvim", requires = {"rktjmp/lush.nvim"}}
+    -- use {"ellisonleao/gruvbox.nvim", requires = {"rktjmp/lush.nvim"}}
+    -- use 'navarasu/onedark.nvim'
 
     -- Save/restore sessions
-    use 'tpope/vim-obsession'
+    -- use 'tpope/vim-obsession'
 
     -- Comment out lines
     use 'terrortylor/nvim-comment'
@@ -58,22 +58,17 @@ require('packer').startup(function()
     use 'cespare/vim-toml'
     use 'lervag/vimtex'
     use 'rust-lang/rust.vim'
-
     use 'vim-python/python-syntax'
-
     use 'ziglang/zig.vim'
-
     use 'fladson/vim-kitty'
-
     use 'mracos/mermaid.vim'
-
-    use {
-        'nvim-treesitter/nvim-treesitter',
-        run = ':TSUpdate',
-    }
+    use 'nvim-treesitter/nvim-treesitter'
     use 'nvim-treesitter/playground'
+    use 'tikhomirov/vim-glsl'
 
     use 'Glench/Vim-Jinja2-Syntax'
+
+    use 'NoahTheDuke/vim-just'
 end)
 
 require'nvim-treesitter.configs'.setup {
