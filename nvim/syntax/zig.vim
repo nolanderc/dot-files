@@ -1,3 +1,0 @@
-
-highlight zigMultilineStringDelimiter guifg=green
-

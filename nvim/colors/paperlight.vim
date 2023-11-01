@@ -60,3 +60,4 @@ hi @string.special gui=italic
 hi @text.environment gui=bold guifg=#883322
 hi @text.environment.name guifg=#884433
 hi @punctuation.special gui=bold
+
