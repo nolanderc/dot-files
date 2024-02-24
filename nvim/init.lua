@@ -107,7 +107,7 @@ nmap([[<Leader>t]], [[:tabe <C-R>=expand("%:~:.:h") . "/" <CR>]], { silent = fal
 nmap([[<Leader>n]], [[:tabe <C-R>=expand("%:~:.:r") . "/" <CR>]], { silent = false })
 
 -- Replace visually selected text in file
-vmap([[<C-r>]], [["hy:%s/<C-r>h/<C-r>h/g<left><left>]], { silent = false })
+vmap([[<C-r>]], [["hy:%s/\C<C-r>h/<C-r>h/g<left><left>]], { silent = false })
 
 -- Scroll the view without the cursor
 nmap([[<C-j>]], [[5<C-e>]])
@@ -158,6 +158,10 @@ vmap([[<leader>f]], [[<cmd>lua vim.lsp.buf.format()<CR>]])
 nmap([[gn]], [[<cmd>lua vim.diagnostic.goto_next({ severity = { min = vim.diagnostic.severity.WARN } })<CR>]])
 nmap([[gp]], [[<cmd>lua vim.diagnostic.goto_prev({ severity = { min = vim.diagnostic.severity.WARN } })<CR>]])
 
+-- wrap in Option/Result
+vmap([[SO]], [[<ESC>`>a><ESC>`<iOption<<ESC>b]])
+vmap([[SR]], [[<ESC>`>a><ESC>`<iResult<<ESC>b]])
+
 -- Start inserting on right indentation
 vim.cmd [[
 function! InsertOnIndentation(default_action)
@@ -185,11 +189,13 @@ omap([[aa]], [[<Plug>Argumentative_OpPendingOuterTextObject]], {noremap = false}
 
 -- Print syntax node(s) under cursor
 nmap([[<leader>z]], [[:echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')<CR>]])
+nmap([[<leader>i]], [[:Inspect<CR>]])
 
 -- }}}
 
 -- PLUGINS {{{
 
+-- LAZY INIT {{{
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -202,6 +208,7 @@ if not vim.loop.fs_stat(lazypath) then
   })
 end
 vim.opt.rtp:prepend(lazypath)
+-- }}}
 
 require('lazy').setup({
     --- General {{{
@@ -255,11 +262,14 @@ require('lazy').setup({
     'neovim/nvim-lspconfig',
     'hrsh7th/cmp-nvim-lsp',
     'hrsh7th/cmp-buffer',
-    'hrsh7th/cmp-path',
+    -- 'hrsh7th/cmp-path',
+    'FelipeLema/cmp-async-path',
     'hrsh7th/cmp-cmdline',
     'hrsh7th/nvim-cmp',
-    'L3MON4D3/LuaSnip',
-    'saadparwaiz1/cmp_luasnip',
+    'hrsh7th/cmp-vsnip',
+    'hrsh7th/vim-vsnip',
+    -- 'L3MON4D3/LuaSnip',
+    -- 'saadparwaiz1/cmp_luasnip',
     -- }}}
 
     -- Languages {{{
@@ -268,7 +278,26 @@ require('lazy').setup({
     'tikhomirov/vim-glsl',
     'NoahTheDuke/vim-just',
     'DingDean/wgsl.vim',
+    'rust-lang/rust.vim',
+    {
+        "nvim-treesitter/nvim-treesitter",
+        build = ":TSUpdate",
+        config = function () 
+            local configs = require("nvim-treesitter.configs")
+    
+            configs.setup({
+                ensure_installed = { "zig", "rust", "lua", "javascript", "html", "python" },
+                sync_install = false,
+                highlight = { enable = true },
+                indent = { enable = true },  
+            })
+        end
+    },
     -- }}}
+
+    --- Themes {{{
+    'morhetz/gruvbox',
+    --- }}}
 })
 
 -- Completions {{{
@@ -277,21 +306,94 @@ local cmp = require'cmp'
 cmp.setup({
     snippet = {
         expand = function(args)
-            -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-            require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+            vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+            -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
             -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
             -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
         end,
     },
-    window = {
-        completion = cmp.config.window.bordered(),
-        documentation = cmp.config.window.bordered(),
-    },
+    -- window = {
+    --     completion = cmp.config.window.bordered(),
+    --     documentation = cmp.config.window.bordered(),
+    -- },
     formatting = {
-        format = function(entry, vim_item)
-            vim_item.menu = nil
-            return vim_item
+        format = function(entry, item)
+            function join_lines(text)
+                return text:gsub("\n+ *", " "):gsub("%( ", "("):gsub(", %)", ")")
+            end
+    
+            local win_width = 0.8 * vim.api.nvim_win_get_width(0)
+            local win_height = 0.8 * vim.api.nvim_win_get_height(0)
+    
+            vim.o.pumheight = math.floor(win_height * 0.3)
+    
+            local max_abbr_width = math.floor(win_width * 0.3)
+            if item.abbr and #item.abbr > max_abbr_width then
+                item.abbr = vim.fn.strcharpart(item.abbr, 0, max_abbr_width - 3) .. "..."
+            end
+           
+            local max_menu_width = math.floor(win_width * 0.3)
+            if item.menu then
+                item.menu = join_lines(item.menu)
+            end
+            if item.menu and #item.menu > max_menu_width then
+                item.menu = vim.fn.strcharpart(item.menu, 0, max_menu_width - 3) .. "..."
+            end
+    
+            return item
         end,
+    },
+    sorting = {
+        comparators = {
+            cmp.config.compare.offset,
+            cmp.config.compare.exact,
+            cmp.config.compare.score,
+
+            function(entry1, entry2)
+                local _, entry1_under = entry1.completion_item.label:find "^_+"
+                local _, entry2_under = entry2.completion_item.label:find "^_+"
+                entry1_under = entry1_under or 0
+                entry2_under = entry2_under or 0
+                if entry1_under > entry2_under then
+                    return false
+                elseif entry1_under < entry2_under then
+                    return true
+                end
+            end,
+
+            -- like `cmp.config.compare.kind`, but orders snippets at the bottom
+            function(entry1, entry2)
+                local types = require 'cmp.types'
+                local ItemKind = types.lsp.CompletionItemKind
+                local kind1 = entry1:get_kind() --- @type lsp.CompletionItemKind | number
+                local kind2 = entry2:get_kind() --- @type lsp.CompletionItemKind | number
+
+                score = {
+                    [ItemKind.EnumMember] = -99,
+                    [ItemKind.Field] = -98,
+                    [ItemKind.Constant] = -97,
+                    [ItemKind.Snippet] = 98,
+                    [ItemKind.Text] = 99,
+                }
+
+                kind1 = score[kind1] or kind1
+                kind2 = score[kind2] or kind2
+
+                if kind1 ~= kind2 then
+                    local diff = kind1 - kind2
+                    if diff < 0 then
+                        return true
+                    elseif diff > 0 then
+                        return false
+                    end
+                end
+                return nil
+            end,
+
+            cmp.config.compare.sort_text,
+            cmp.config.compare.length,
+            cmp.config.compare.order,
+        },
     },
     mapping = cmp.mapping.preset.insert({
         ['<TAB>'] = cmp.mapping.confirm({ select = false }),
@@ -306,12 +408,10 @@ cmp.setup({
     }),
     sources = cmp.config.sources({
         { name = 'nvim_lsp' },
-        -- { name = 'vsnip' }, -- For vsnip users.
-        { name = 'luasnip' }, -- For luasnip users.
-        -- { name = 'ultisnips' }, -- For ultisnips users.
-        -- { name = 'snippy' }, -- For snippy users.
+        { name = 'luasnip' },
     }, {
         { name = 'buffer' },
+        { name = 'async_path' },
     })
 })
 
@@ -336,7 +436,7 @@ cmp.setup.cmdline({ '/', '?' }, {
 cmp.setup.cmdline(':', {
     mapping = cmp.mapping.preset.cmdline(),
     sources = cmp.config.sources({
-        { name = 'path' }
+        { name = 'async_path' }
     }, {
         { name = 'cmdline' }
     })
@@ -351,16 +451,46 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
         update_in_insert = true,
     }
 )
-
 -- }}}
 
 -- LSP Servers {{{
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local lspconfig = require('lspconfig')
-lspconfig.zls.setup { capabilities = capabilities }
-lspconfig.pylsp.setup { capabilities = capabilities }
-lspconfig.glsl_analyzer.setup { capabilities = capabilities }
-lspconfig.rust_analyzer.setup { capabilities = capabilities }
+
+local LspAutoFormatGroup = vim.api.nvim_create_augroup("LspFormatting", {})
+function on_attach(client, bufnr)
+    if client.supports_method("textDocument/formatting") then
+        vim.api.nvim_clear_autocmds({ group = LspAutoFormatGroup, buffer = bufnr })
+        vim.api.nvim_create_autocmd("BufWritePre", {
+            group = LspAutoFormatGroup,
+            buffer = bufnr,
+            callback = function()
+                vim.lsp.buf.format()
+            end,
+        })
+    end
+end
+
+lspconfig.zls.setup { capabilities = capabilities, on_attach = on_attach }
+lspconfig.pyright.setup { capabilities = capabilities, on_attach = on_attach}
+lspconfig.glsl_analyzer.setup { capabilities = capabilities, on_attach = on_attach }
+lspconfig.ocamllsp.setup { capabilities = capabilities, on_attach = on_attach }
+
+lspconfig.rust_analyzer.setup { 
+    capabilities = capabilities,
+    on_attach = on_attach,
+    settings = {
+        ['rust-analyzer'] = {
+            checkOnSave = { command = 'clippy' },
+            diagnostics = {
+                warningsAsHint = {
+                    'dead_code',
+                    'unused_variables',
+                },
+            },
+        },
+    },
+}
 
 vim.lsp.handlers["wgsl-analyzer/requestConfiguration"] = function(err, result, ctx, config)
     return { 
@@ -390,6 +520,7 @@ lspconfig.wgsl_analyzer.setup { capabilities = capabilities }
 -- }}}
 
 -- Other {{{
+vim.g.zig_fmt_autosave = 0
 vim.g.zig_fmt_parse_errors = 0
 -- }}}
 
@@ -399,21 +530,50 @@ vim.g.zig_fmt_parse_errors = 0
 
 -- Set the colorscheme
 vim.cmd [[syntax on]]
+
 vim.o.termguicolors = true
-vim.o.background = 'light'
+vim.o.background = 'dark'
 vim.g.gruvbox_italic = 1
-vim.cmd [[ colorscheme paperdark ]]
+vim.g.gruvbox_contrast_light = 'medium'
+vim.g.gruvbox_invert_selection = 0
+vim.cmd.colorscheme('paperdark')
 vim.cmd [[ set cursorline ]]
+
+vim.cmd [[
+    hi! link @lsp.type.Keyword Keyword
+]]
+
+vim.cmd [[ hi diffAdded guifg=#38ce35 ]]
+vim.cmd [[ hi diffRemoved guifg=#ed7c63 ]]
 
 -- Zig {{{
 vim.cmd[[hi link zigPreProc Keyword]]
 vim.cmd[[hi link zigVarDecl Keyword]]
 vim.cmd[[hi link zigMacro Keyword]]
 vim.cmd[[hi link zigExecution Keyword]]
+vim.cmd[[hi link @type.qualifier.zig Keyword]]
 -- }}}
+
+-- Lua {{{
+vim.cmd[[hi link luaFunction Keyword]]
+-- }}}
+
+-- Rust {{{
+vim.cmd[[hi link rustModPath Type]]
+vim.cmd[[hi link rustSelf Identifier]]
+vim.cmd[[hi link rustCommentLineDoc Comment]]
+vim.cmd[[hi link @storageclass.lifetime.rust Comment]]
+vim.cmd[[hi link @keyword.storage.lifetime.rust Comment]]
+-- }}}
+
+-- Disable LSP highlights
+-- for _, group in ipairs(vim.fn.getcompletion("@lsp", "highlight")) do
+--   vim.api.nvim_set_hl(0, group, {})
+-- end
 
 -- }}}
 
 -- LANGUAGES {{{
 vim.cmd [[autocmd FileType glsl setlocal commentstring=//\ %s]]
+vim.cmd [[autocmd FileType wgsl setlocal commentstring=//\ %s]]
 -- }}}

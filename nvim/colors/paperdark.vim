@@ -1,20 +1,20 @@
 hi Title guifg=#ffffff
 
-hi Normal guifg=fg
-hi Identifier guifg=fg
-hi Special guifg=fg
+hi Normal guifg=#ebdbb2
+hi Identifier guifg=#ebdbb2
+hi Special guifg=#ebdbb2
 
 hi Statement gui=bold guifg=#cccccc
 hi Keyword gui=bold guifg=#cccccc
 
 hi Type gui=none guifg=#ddf4cb
 
-hi Constant gui=italic guifg=#c791c9
-hi Macro gui=none guifg=#c791c9
-hi PreProc gui=bold guifg=#c791c9
-hi PreCondit gui=bold guifg=#c791c9
-hi Include gui=bold guifg=#c791c9
-hi Define gui=bold guifg=#c791c9
+hi Constant gui=none guifg=#c791c9
+hi Macro gui=bold guifg=#48c499
+hi PreProc gui=bold guifg=#40b28a
+hi PreCondit gui=bold guifg=#40b28a
+hi Include gui=bold guifg=#40b28a
+hi Define gui=bold guifg=#40b28a
 
 hi Special gui=none guifg=#f4af38
 hi SpecialKey gui=none guifg=#f4af38
@@ -53,3 +53,9 @@ hi NonText gui=none guifg=#6d0e05
 hi Visual gui=none guibg=#444444
 
 hi TelescopeSelection gui=bold guifg=fg
+
+hi link @punctuation Operator
+hi link @function.builtin Keyword
+hi link @constant.builtin Macro
+hi link @attribute Keyword
+

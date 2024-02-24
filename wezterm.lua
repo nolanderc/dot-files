@@ -7,6 +7,7 @@ if wezterm.config_builder then
     config = wezterm.config_builder()
 end
 
+config.front_end = 'OpenGL'
 config.color_scheme = 'GruvboxDarkHard'
 
 config.hide_tab_bar_if_only_one_tab = true
@@ -17,11 +18,11 @@ config.font = wezterm.font 'Iosevka Term SS14'
 config.font_size = 11.5
 config.harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }
 
-config.pane_focus_follows_mouse = true
+config.pane_focus_follows_mouse = false
 
 config.keys = {
     { mods = 'ALT',       key = 'd', action = wezterm.action.SplitHorizontal {} },
-    { mods = 'SHIFT|ALT', key = 'd', action = wezterm.action.SplitVertical   {} },
+    { mods = 'ALT',       key = 'b', action = wezterm.action.SplitVertical   {} },
     { mods = 'ALT',       key = 'h', action = wezterm.action.ActivatePaneDirection 'Left' },
     { mods = 'ALT',       key = 'l', action = wezterm.action.ActivatePaneDirection 'Right' },
     { mods = 'ALT',       key = 'j', action = wezterm.action.ActivatePaneDirection 'Down' },
