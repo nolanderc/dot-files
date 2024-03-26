@@ -15,12 +15,23 @@ set $mod Mod1
 # is used in the bar {} block below.
 font pango:Comic Code 10
 
-exec_always --no-startup-id xset r rate 190 30
+# Keyboard repeat rate
+exec_always --no-startup-id xset r rate 190 40
+
+# Mouse acceleration (wireless/wired)
 exec_always --no-startup-id xinput set-prop 'pointer:Logitech G900' 'libinput Accel Profile Enabled' 0 1 0
+exec_always --no-startup-id xinput set-prop 'pointer:Logitech Gaming Mouse G900' 'libinput Accel Profile Enabled' 0 1 0
+
+# Touchpad sensitivity
+exec_always --no-startup-id xinput set-prop 'ELAN1201:00 04F3:3098 Touchpad' 'libinput Accel Speed' 0.1
+exec_always --no-startup-id xinput set-prop 'ELAN1201:00 04F3:3098 Touchpad' 'libinput Scrolling Pixel Distance' 50
+
+# Tap to click
+exec_always --no-startup-id xinput set-prop 'ELAN1201:00 04F3:3098 Touchpad' 'libinput Tapping Enabled' 1
 
 exec_always --no-startup-id autorandr --change
 
-exec_always --no-startup-id setxkbmap us
+exec_always --no-startup-id setxkbmap dvorak
 exec_always --no-startup-id setxkbmap -option caps:escape
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
@@ -38,6 +49,13 @@ exec --no-startup-id dex --autostart --environment i3
 # screen before suspend. Use loginctl lock-session to lock your screen.
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 
+# Number of seconds to wait until [standby] <= [suspend] <= [off].
+# A 0 disables the mode.
+exec_always --no-startup-id xset dpms 600 1200 0
+
+# Don't lock in fullscreen video.
+exec_always --no-startup-id caffeine
+
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
@@ -48,8 +66,6 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
-
-bindsym Mod4+l exec systemctl suspend
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -86,9 +102,10 @@ bindsym $mod+Ctrl+b layout splitv
 bindsym $mod+Ctrl+t layout tabbed
 bindsym $mod+Ctrl+s layout stacked
 
-bindsym $mod+d split h; exec uxterm -e "cd `xcwd` && $SHELL"
-bindsym $mod+b split v; exec uxterm -e "cd `xcwd` && $SHELL"
-bindsym $mod+c split h; layout tabbed; exec uxterm -e "cd `xcwd` && $SHELL"
+bindsym $mod+d split h; exec 'start-terminal.sh'
+bindsym $mod+b split v; exec 'start-terminal.sh'
+bindsym $mod+c split v; layout stacked; exec 'start-terminal.sh'
+bindsym $mod+t split h; layout tabbed; exec 'start-terminal.sh'
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
@@ -197,11 +214,25 @@ client.focused_inactive $darkgray $darkgray $lightgray $darkgray $black
 client.unfocused        $darkgray $darkgray $lightgray $darkgray $black
 client.urgent           $red $red $white $red $red
 
-default_border pixel 1
-default_floating_border normal
 hide_edge_borders both
 
 focus_wrapping no
 
-for_window [class="miner"] floating enable
+for_window [floating] border normal
+for_window [tiling] border pixel 1
+
+
+# Handle power button
+set $mode_system System  (l)ock  (e)xit  (s)hutdown
+mode "$mode_system" {
+    bindsym l exec --no-startup-id systemctl suspend, mode "default"
+    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    bindsym s exec --no-startup-id poweroff, mode "default"
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym XF86PowerOff mode "$mode_system"
+bindsym Mod4+l mode "$mode_system"
 
