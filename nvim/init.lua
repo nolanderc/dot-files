@@ -512,7 +512,7 @@ lspconfig.taplo.setup { capabilities = capabilities, on_attach = on_attach }
 lspconfig.ts_ls.setup { capabilities = capabilities, on_attach = on_attach }
 lspconfig.html.setup { capabilities = capabilities, on_attach = on_attach }
 lspconfig.cssls.setup { capabilities = capabilities, on_attach = on_attach }
-lspconfig.ruff_lsp.setup { capabilities = capabilities, on_attach = on_attach }
+lspconfig.ruff.setup { capabilities = capabilities, on_attach = on_attach }
 
 lspconfig.rust_analyzer.setup {
     capabilities = capabilities,
