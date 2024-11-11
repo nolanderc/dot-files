@@ -1,7 +1,8 @@
 hi Title guifg=#000000
 
-hi Normal guifg=black
+hi Normal guifg=black guibg=bg0
 hi Identifier guifg=black
+hi Function guifg=black
 hi Special guifg=black
 
 hi Statement gui=bold guifg=#111111
@@ -17,7 +18,7 @@ hi @attribute gui=italic guifg=#773377
 
 hi Include guifg=black
 
-hi Comment gui=italic guifg=#888888
+hi Comment gui=none guifg=#888888
 
 hi NormalFloat guibg=#dddddd
 hi FloatBorder guibg=#dddddd
@@ -61,3 +62,7 @@ hi @text.environment gui=bold guifg=#883322
 hi @text.environment.name guifg=#884433
 hi @punctuation.special gui=bold
 
+hi CursorLine guibg=none
+hi Search guibg=#e3e4e1
+
+hi @lsp.mod.attribute.rust guifg=#774634

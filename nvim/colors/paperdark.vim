@@ -54,8 +54,4 @@ hi Visual gui=none guibg=#444444
 
 hi TelescopeSelection gui=bold guifg=fg
 
-hi link @punctuation Operator
-hi link @function.builtin Keyword
-hi link @constant.builtin Macro
-hi link @attribute Keyword
-
+hi Search guifg=none guibg=#454545

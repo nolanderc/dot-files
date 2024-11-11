@@ -1,4 +1,4 @@
--- vim:fileencoding=utf-8:foldmethod=marker
+-- vim:fileencoding=utf-8
 
 -- GENERAL {{{
 
@@ -18,33 +18,33 @@ vim.o.signcolumn = 'no'
 vim.cmd [[autocmd FocusLost,BufLeave * silent! update]]
 
 -- Indent by 4 spaces
-vim.o.expandtab     = true  -- Use spaces over tabs
-vim.o.tabstop       = 4     -- Use 4 spaces for each tab
-vim.o.shiftwidth    = 4     -- Increase/decrease indentation using 4 spaces at a time
+vim.o.expandtab   = true -- Use spaces over tabs
+vim.o.tabstop     = 4    -- Use 4 spaces for each tab
+vim.o.shiftwidth  = 4    -- Increase/decrease indentation using 4 spaces at a time
 
 -- Searching
-vim.o.hlsearch  = false -- Don't highlight matches after search is completed
-vim.o.incsearch = true  -- Highlight while typing the search query
+vim.o.hlsearch    = true -- Don't highlight matches after search is completed
+vim.o.incsearch   = true -- Highlight while typing the search query
 
- -- Search case-insensitively if the search term is lowercase
-vim.o.ignorecase = true -- Case-insensitive search
-vim.o.smartcase = true  -- Override above if search contains uppercase letters
+-- Search case-insensitively if the search term is lowercase
+vim.o.ignorecase  = true -- Case-insensitive search
+vim.o.smartcase   = true -- Override above if search contains uppercase letters
 
 -- Line wrapping
-vim.o.breakindent   = true   -- Indent wrapped lines to the same indentation as their parent
-vim.o.linebreak     = true   -- Wrap lines on whole words
-vim.o.showbreak     = "    " -- Indent wrapped lines by four spaces
+vim.o.breakindent = true   -- Indent wrapped lines to the same indentation as their parent
+vim.o.linebreak   = true   -- Wrap lines on whole words
+vim.o.showbreak   = "    " -- Indent wrapped lines by four spaces
 
 -- Keep cursor from going to the very top/bottom of the screen
-vim.o.scrolloff = 5
+vim.o.scrolloff   = 5
 
 -- Enable persistent undo
-vim.o.undofile = true
+vim.o.undofile    = true
 
 -- Disable status bar
-vim.o.laststatus = 0
-vim.o.showmode = false
-vim.o.shortmess = vim.o.shortmess .. 'FWc';
+vim.o.laststatus  = 0
+vim.o.showmode    = false
+vim.o.shortmess   = vim.o.shortmess .. 'FWc';
 
 -- When attempting to save a file, if the directory does not exist, create it
 vim.cmd [[
@@ -67,20 +67,24 @@ augroup END
 -- MAPPINGS {{{
 
 -- Helper functions to easily create bindings
-function map(mode, keys, command, opts)
-	opts = vim.tbl_extend('keep', opts or {}, { noremap = true, silent = true })
-	vim.api.nvim_set_keymap(mode, keys, command, opts)
-end
-function nmap(keys, command, opts) map('n', keys, command, opts) end
-function imap(keys, command, opts) map('i', keys, command, opts) end
-function vmap(keys, command, opts) map('v', keys, command, opts) end
-function omap(keys, command, opts) map('o', keys, command, opts) end
-function xmap(keys, command, opts) map('x', keys, command, opts) end
-function unmap(mode, keys)
-	vim.api.nvim_del_keymap(mode, keys)
+local function map(mode, keys, command, opts)
+    opts = vim.tbl_extend('keep', opts or {}, { noremap = true, silent = true })
+    vim.api.nvim_set_keymap(mode, keys, command, opts)
 end
 
+local function nmap(keys, command, opts) map('n', keys, command, opts) end
+
+local function imap(keys, command, opts) map('i', keys, command, opts) end
+
+local function vmap(keys, command, opts) map('v', keys, command, opts) end
+
+local function omap(keys, command, opts) map('o', keys, command, opts) end
+
+local function xmap(keys, command, opts) map('x', keys, command, opts) end
+
 vim.g.mapleader = " "
+
+nmap([[<ESC>]], [[:silent! nohls<CR><ESC>]])
 
 -- Copy selected range to clipboard
 vmap([[<leader>y]], [["+y]])
@@ -120,18 +124,18 @@ nmap([[gd]], [[<cmd>lua require('telescope.builtin').lsp_definitions()<CR>]])
 -- Goto definition, but in a new tab
 nmap([[gD]], [[mt:tabe %<CR>`t<cmd>lua require('telescope.builtin').lsp_definitions()<CR>]])
 -- Goto definition, but in a split
-nmap([[g<c-d>]], [[mt:split<CR>`t<cmd>lua require('telescope.builtin').lsp_definitions()<CR>]])
+nmap([[gs]], [[mt:split<CR>`t<cmd>lua require('telescope.builtin').lsp_definitions()<CR>]])
 
 -- Search workspace symbols
-nmap([[<leader>s]], [[<cmd>lua require('telescope.builtin').lsp_dynamic_workspace_symbols()<CR>]])
+nmap([[<leader>S]], [[<cmd>lua require('telescope.builtin').lsp_dynamic_workspace_symbols()<CR>]])
 
 -- Search document symbols
-nmap([[<leader>S]], [[<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>]])
+nmap([[<leader>s]], [[<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>]])
 
--- List all diagnostics
-nmap([[<leader>d]], [[<cmd>lua require('telescope.builtin').diagnostics()<CR>]])
 -- List errors
-nmap([[<leader>D]], [[<cmd>lua require('telescope.builtin').diagnostics({severity_limit = 'error'})<CR>]])
+nmap([[<leader>d]], [[<cmd>lua require('telescope.builtin').diagnostics({severity_limit = 'error'})<CR>]])
+-- List all diagnostics
+nmap([[<leader>D]], [[<cmd>lua require('telescope.builtin').diagnostics()<CR>]])
 
 
 -- Show hover information on the item under the cursor
@@ -157,6 +161,8 @@ vmap([[<leader>f]], [[<cmd>lua vim.lsp.buf.format()<CR>]])
 -- Goto diagnostics
 nmap([[gn]], [[<cmd>lua vim.diagnostic.goto_next({ severity = { min = vim.diagnostic.severity.WARN } })<CR>]])
 nmap([[gp]], [[<cmd>lua vim.diagnostic.goto_prev({ severity = { min = vim.diagnostic.severity.WARN } })<CR>]])
+nmap([[gN]], [[<cmd>lua vim.diagnostic.goto_next({})<CR>]])
+nmap([[gP]], [[<cmd>lua vim.diagnostic.goto_prev({})<CR>]])
 
 -- wrap in Option/Result
 vmap([[SO]], [[<ESC>`>a><ESC>`<iOption<<ESC>b]])
@@ -179,13 +185,13 @@ noremap <expr> I InsertOnIndentation('I')
 nmap([[-]], [[g_v^]])
 
 -- Argument text object
-nmap([[>.]], [[<Plug>Argumentative_MoveRight]], {noremap=false})
+nmap([[>.]], [[<Plug>Argumentative_MoveRight]], { noremap = false })
 
-xmap([[ia]], [[<Plug>Argumentative_InnerTextObject]], {noremap = false})
-xmap([[aa]], [[<Plug>Argumentative_OuterTextObject]], {noremap = false})
+xmap([[ia]], [[<Plug>Argumentative_InnerTextObject]], { noremap = false })
+xmap([[aa]], [[<Plug>Argumentative_OuterTextObject]], { noremap = false })
 
-omap([[ia]], [[<Plug>Argumentative_OpPendingInnerTextObject]], {noremap = false})
-omap([[aa]], [[<Plug>Argumentative_OpPendingOuterTextObject]], {noremap = false})
+omap([[ia]], [[<Plug>Argumentative_OpPendingInnerTextObject]], { noremap = false })
+omap([[aa]], [[<Plug>Argumentative_OpPendingOuterTextObject]], { noremap = false })
 
 -- Print syntax node(s) under cursor
 nmap([[<leader>z]], [[:echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')<CR>]])
@@ -198,14 +204,14 @@ nmap([[<leader>i]], [[:Inspect<CR>]])
 -- LAZY INIT {{{
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
+        lazypath,
+    })
 end
 vim.opt.rtp:prepend(lazypath)
 -- }}}
@@ -223,14 +229,19 @@ require('lazy').setup({
         tag = '0.1.4',
         dependencies = { 'nvim-lua/plenary.nvim' },
         config = function()
-            require'telescope'.setup{
+            require 'telescope'.setup {
                 defaults = {
                     mappings = {
                         i = {
-                            ['<ESC>'] = require'telescope.actions'.close,
+                            ['<ESC>'] = require 'telescope.actions'.close,
                         }
                     },
                     layout_strategy = 'vertical',
+                },
+                pickers = {
+                    colorscheme = {
+                        enable_preview = true,
+                    },
                 },
             }
         end
@@ -256,6 +267,7 @@ require('lazy').setup({
             },
         },
     },
+    'folke/neoconf.nvim',
     --- }}}
 
     -- LSP {{{
@@ -264,6 +276,7 @@ require('lazy').setup({
     'hrsh7th/cmp-buffer',
     -- 'hrsh7th/cmp-path',
     'FelipeLema/cmp-async-path',
+
     'hrsh7th/cmp-cmdline',
     'hrsh7th/nvim-cmp',
     'hrsh7th/cmp-vsnip',
@@ -282,14 +295,17 @@ require('lazy').setup({
     {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
-        config = function () 
+        config = function()
             local configs = require("nvim-treesitter.configs")
-    
+
             configs.setup({
                 ensure_installed = { "zig", "rust", "lua", "javascript", "html", "python" },
                 sync_install = false,
                 highlight = { enable = true },
-                indent = { enable = true },  
+                indent = {
+                    enable = true,
+                    disable = { "zig" },
+                },
             })
         end
     },
@@ -297,11 +313,14 @@ require('lazy').setup({
 
     --- Themes {{{
     'morhetz/gruvbox',
+    'Shatur/neovim-ayu',
     --- }}}
 })
 
 -- Completions {{{
-local cmp = require'cmp'
+local cmp = require 'cmp'
+
+cmp.register_source('async_path_cwd', require('cmp_async_path').new())
 
 cmp.setup({
     snippet = {
@@ -321,17 +340,17 @@ cmp.setup({
             function join_lines(text)
                 return text:gsub("\n+ *", " "):gsub("%( ", "("):gsub(", %)", ")")
             end
-    
+
             local win_width = 0.8 * vim.api.nvim_win_get_width(0)
             local win_height = 0.8 * vim.api.nvim_win_get_height(0)
-    
+
             vim.o.pumheight = math.floor(win_height * 0.3)
-    
+
             local max_abbr_width = math.floor(win_width * 0.3)
             if item.abbr and #item.abbr > max_abbr_width then
                 item.abbr = vim.fn.strcharpart(item.abbr, 0, max_abbr_width - 3) .. "..."
             end
-           
+
             local max_menu_width = math.floor(win_width * 0.3)
             if item.menu then
                 item.menu = join_lines(item.menu)
@@ -339,7 +358,7 @@ cmp.setup({
             if item.menu and #item.menu > max_menu_width then
                 item.menu = vim.fn.strcharpart(item.menu, 0, max_menu_width - 3) .. "..."
             end
-    
+
             return item
         end,
     },
@@ -368,7 +387,7 @@ cmp.setup({
                 local kind1 = entry1:get_kind() --- @type lsp.CompletionItemKind | number
                 local kind2 = entry2:get_kind() --- @type lsp.CompletionItemKind | number
 
-                score = {
+                local score = {
                     [ItemKind.EnumMember] = -99,
                     [ItemKind.Field] = -98,
                     [ItemKind.Constant] = -97,
@@ -406,13 +425,23 @@ cmp.setup({
         -- ['<C-e>'] = cmp.mapping.abort(),
         -- ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
     }),
-    sources = cmp.config.sources({
-        { name = 'nvim_lsp' },
-        { name = 'luasnip' },
-    }, {
-        { name = 'buffer' },
-        { name = 'async_path' },
-    })
+    sources = cmp.config.sources(
+        {
+            { name = 'nvim_lsp' },
+            { name = 'luasnip' },
+        }, {
+            { name = 'buffer' },
+            { name = 'async_path' },
+            {
+                name = 'async_path_cwd',
+                option = {
+                    get_cwd = function()
+                        return vim.loop.cwd()
+                    end
+                },
+            },
+        }
+    )
 })
 
 -- Set configuration for specific filetype.
@@ -444,6 +473,9 @@ cmp.setup.cmdline(':', {
 -- }}}
 
 -- LSP Setup {{{
+require("neoconf").setup {
+}
+
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     vim.lsp.diagnostic.on_publish_diagnostics, {
         virtual_text = true,
@@ -472,11 +504,17 @@ function on_attach(client, bufnr)
 end
 
 lspconfig.zls.setup { capabilities = capabilities, on_attach = on_attach }
-lspconfig.pyright.setup { capabilities = capabilities, on_attach = on_attach}
+lspconfig.pyright.setup { capabilities = capabilities, on_attach = on_attach }
 lspconfig.glsl_analyzer.setup { capabilities = capabilities, on_attach = on_attach }
 lspconfig.ocamllsp.setup { capabilities = capabilities, on_attach = on_attach }
+lspconfig.clangd.setup { capabilities = capabilities, on_attach = on_attach }
+lspconfig.taplo.setup { capabilities = capabilities, on_attach = on_attach }
+lspconfig.ts_ls.setup { capabilities = capabilities, on_attach = on_attach }
+lspconfig.html.setup { capabilities = capabilities, on_attach = on_attach }
+lspconfig.cssls.setup { capabilities = capabilities, on_attach = on_attach }
+lspconfig.ruff_lsp.setup { capabilities = capabilities, on_attach = on_attach }
 
-lspconfig.rust_analyzer.setup { 
+lspconfig.rust_analyzer.setup {
     capabilities = capabilities,
     on_attach = on_attach,
     settings = {
@@ -486,37 +524,63 @@ lspconfig.rust_analyzer.setup {
                 warningsAsHint = {
                     'dead_code',
                     'unused_variables',
+                    'unused_assignments',
                 },
             },
         },
     },
 }
 
-vim.lsp.handlers["wgsl-analyzer/requestConfiguration"] = function(err, result, ctx, config)
-    return { 
-        success = true,
-        customImports = { _dummy_ = "dummy"},
-        shaderDefs = {},
-        trace = {
-            extension = false,
-            server = false,
+lspconfig.jsonls.setup { capabilities = capabilities, on_attach = on_attach }
+lspconfig.lua_ls.setup { capabilities = capabilities, on_attach = on_attach, on_init = function(client)
+    local path = client.workspace_folders[1].name
+    if vim.loop.fs_stat(path .. '/.luarc.json') or vim.loop.fs_stat(path .. '/.luarc.jsonc') then
+        return
+    end
+
+    client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+        runtime = {
+            version = 'LuaJIT'
         },
-        inlayHints = {
-            enabled = false,
-            typeHints = false,
-            parameterHints = false,
-            structLayoutHints = false,
-            typeVerbosity = "inner",
-        },
-        diagnostics = {
-            typeErrors = true,
-            nagaParsingErrors = true,
-            nagaValidationErrors = true,
-            nagaVersion = "main",
+        workspace = {
+            checkThirdParty = false,
+            library = {
+                vim.env.VIMRUNTIME
+            }
+            -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
+            -- library = vim.api.nvim_get_runtime_file("", true)
         }
-    }
-end
-lspconfig.wgsl_analyzer.setup { capabilities = capabilities }
+    })
+end }
+lspconfig.glasgow.setup { capabilities = capabilities, on_attach = on_attach }
+
+vim.cmd [[ nmap <F8> :LspRestart<CR>:edit<CR> ]]
+
+-- vim.lsp.handlers["wgsl-analyzer/requestConfiguration"] = function(err, result, ctx, config)
+--     return {
+--         success = true,
+--         customImports = { _dummy_ = "dummy"},
+--         shaderDefs = {},
+--         trace = {
+--             extension = false,
+--             server = false,
+--         },
+--         inlayHints = {
+--             enabled = false,
+--             typeHints = false,
+--             parameterHints = false,
+--             structLayoutHints = false,
+--             typeVerbosity = "inner",
+--         },
+--         diagnostics = {
+--             typeErrors = true,
+--             nagaParsingErrors = true,
+--             nagaValidationErrors = true,
+--             nagaVersion = "main",
+--         }
+--     }
+-- end
+-- lspconfig.wgsl_analyzer.setup { capabilities = capabilities }
 -- }}}
 
 -- Other {{{
@@ -532,38 +596,44 @@ vim.g.zig_fmt_parse_errors = 0
 vim.cmd [[syntax on]]
 
 vim.o.termguicolors = true
-vim.o.background = 'dark'
+vim.o.background = 'light'
 vim.g.gruvbox_italic = 1
 vim.g.gruvbox_contrast_light = 'medium'
 vim.g.gruvbox_invert_selection = 0
-vim.cmd.colorscheme('paperdark')
+-- vim.cmd.colorscheme('paperdark')
+vim.cmd.colorscheme('paperlight')
 vim.cmd [[ set cursorline ]]
-
-vim.cmd [[
-    hi! link @lsp.type.Keyword Keyword
-]]
 
 vim.cmd [[ hi diffAdded guifg=#38ce35 ]]
 vim.cmd [[ hi diffRemoved guifg=#ed7c63 ]]
 
+vim.cmd [[
+    hi! link @lsp.type.Keyword Keyword
+    hi! link @lsp.type.label Comment
+    hi! link @punctuation Operator
+    hi! link @function.builtin Keyword
+    hi! link @constant.builtin Macro
+    hi! link @attribute Keyword
+]]
+
 -- Zig {{{
-vim.cmd[[hi link zigPreProc Keyword]]
-vim.cmd[[hi link zigVarDecl Keyword]]
-vim.cmd[[hi link zigMacro Keyword]]
-vim.cmd[[hi link zigExecution Keyword]]
-vim.cmd[[hi link @type.qualifier.zig Keyword]]
+vim.cmd [[hi link zigPreProc Keyword]]
+vim.cmd [[hi link zigVarDecl Keyword]]
+vim.cmd [[hi link zigMacro Keyword]]
+vim.cmd [[hi link zigExecution Keyword]]
+vim.cmd [[hi link @type.qualifier.zig Keyword]]
 -- }}}
 
 -- Lua {{{
-vim.cmd[[hi link luaFunction Keyword]]
+vim.cmd [[hi link luaFunction Keyword]]
 -- }}}
 
 -- Rust {{{
-vim.cmd[[hi link rustModPath Type]]
-vim.cmd[[hi link rustSelf Identifier]]
-vim.cmd[[hi link rustCommentLineDoc Comment]]
-vim.cmd[[hi link @storageclass.lifetime.rust Comment]]
-vim.cmd[[hi link @keyword.storage.lifetime.rust Comment]]
+vim.cmd [[hi link rustModPath Type]]
+vim.cmd [[hi link rustSelf Identifier]]
+vim.cmd [[hi link rustCommentLineDoc Comment]]
+vim.cmd [[hi link @storageclass.lifetime.rust Comment]]
+vim.cmd [[hi link @keyword.storage.lifetime.rust Comment]]
 -- }}}
 
 -- Disable LSP highlights
@@ -576,4 +646,6 @@ vim.cmd[[hi link @keyword.storage.lifetime.rust Comment]]
 -- LANGUAGES {{{
 vim.cmd [[autocmd FileType glsl setlocal commentstring=//\ %s]]
 vim.cmd [[autocmd FileType wgsl setlocal commentstring=//\ %s]]
+vim.cmd [[autocmd FileType json setlocal shiftwidth=2]]
+vim.cmd [[autocmd FileType json setlocal tabstop=2]]
 -- }}}
