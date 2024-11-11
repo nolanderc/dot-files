@@ -6,6 +6,7 @@ end
 
 set fish_greeting
 
+set -g fish_key_bindings fish_hybrid_key_bindings
 
 function fish_prompt
     # Prompt status only if it's not 0 (keep this first)
@@ -23,12 +24,13 @@ function fish_prompt
         (set_color normal) ' '
 end
 
-fish_config theme choose 'Base16 Eighties'
+fish_config theme choose 'None'
 set fish_color_valid_path --italics
 
-alias l='ls -a'
-alias ll='ls -al'
+alias l='ls -lh'
+alias ll='ls -alh'
 alias gl='git pull'
+alias gp='git push'
 alias gc='git commit --verbose'
 alias ga='git add'
 alias glg='git log --graph'
