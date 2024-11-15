@@ -84,6 +84,10 @@ input "type:touchpad" {
 	natural_scroll enabled
 }
 
+input "type:pointer" {
+	accel_profile flat
+}
+
 bindsym $super+1 input "type:keyboard" xkb_layout us
 bindsym $super+2 input "type:keyboard" xkb_layout us(dvorak)
 bindsym $super+3 input "type:keyboard" xkb_layout se(svdvorak)
@@ -249,6 +253,9 @@ font Comic Code 8
 
 bar {
     swaybar_command waybar
+    hidden_state hide
+    mode hide
+    modifier Mod4
 }
 exec_always killall -SIGUSR1 waybar
 exec nm-applet
