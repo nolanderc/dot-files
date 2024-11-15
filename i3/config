@@ -32,10 +32,10 @@ exec_always --no-startup-id xinput set-prop 'ELAN1201:00 04F3:3098 Touchpad' 'li
 exec --no-startup-id xsetroot -solid "#492236"
 
 set $xkbmap setxkbmap -option caps:escape
-exec_always --no-startup-id $xkbmap us
-bindsym Mod4+1 exec $xkbmap us
-bindsym Mod4+2 exec $xkbmap dvorak
-bindsym Mod4+3 exec $xkbmap se -variant svdvorak
+exec_always --no-startup-id $xkbmap 'us'
+bindsym Mod4+1 exec $xkbmap 'us'
+bindsym Mod4+2 exec $xkbmap 'us(dvorak)'
+bindsym Mod4+3 exec $xkbmap 'se(svdvorak)'
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).

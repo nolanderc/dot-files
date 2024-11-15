@@ -8,6 +8,7 @@
 #
 # Logo key. Use Mod1 for Alt.
 set $mod Mod1
+set $super Mod4
 # Home row direction keys, like vim
 set $left h
 set $down j
@@ -22,10 +23,16 @@ set $menu fuzzel
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
 # Requires: desktop-backgrounds-compat, swaybg
-output * bg /usr/share/backgrounds/default.png fill
-output * max_render_time 2
+# output * bg /usr/share/backgrounds/default.png fill
+output * max_render_time off
+bindsym $super+8 output * max_render_time 2
+bindsym $super+9 output * max_render_time 5
+bindsym $super+0 output * max_render_time off
+
+output * adaptive_sync on
 
 # Reload kanshi config when sway reloads.
+exec kanshi
 exec_always pkill kanshi; kanshi
 
 #
@@ -47,6 +54,10 @@ exec_always pkill kanshi; kanshi
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
+exec_always swayidle -w \
+         timeout 300 'swaylock -f -c 000000' \
+         timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
+         before-sleep 'swaylock -f -c 000000'
 
 ### Input configuration
 #
@@ -73,10 +84,10 @@ input "type:touchpad" {
 	natural_scroll enabled
 }
 
-bindsym Mod4+1 input "type:keyboard" xkb_layout us
-bindsym Mod4+2 input "type:keyboard" xkb_layout us(dvorak)
-bindsym Mod4+3 input "type:keyboard" xkb_layout se(svdvorak)
-bindsym Mod4+4 input "type:keyboard" xkb_layout se
+bindsym $super+1 input "type:keyboard" xkb_layout us
+bindsym $super+2 input "type:keyboard" xkb_layout us(dvorak)
+bindsym $super+3 input "type:keyboard" xkb_layout se(svdvorak)
+bindsym $super+4 input "type:keyboard" xkb_layout se
 
 ### Key bindings
 #
@@ -222,7 +233,7 @@ mode "$mode_system" {
     bindsym Escape mode "default"
 }
 bindsym XF86PowerOff mode "$mode_system"
-bindsym Mod4+l mode "$mode_system"
+bindsym $super+l mode "$mode_system"
 
 exec_always xrdb ~/.Xresources
 
@@ -235,7 +246,12 @@ font Comic Code 8
 
 # toggle waybar
 # bindsym --no-repeat $mod+o exec killall -SIGUSR1 waybar
-# bindsym --release $mod+o exec killall -SIGUSR1 waybar
+
+bar {
+    swaybar_command waybar
+}
+exec_always killall -SIGUSR1 waybar
+exec nm-applet
 
 # Include configs from 3 locations:
 #  - /usr/share/sway/config.d
