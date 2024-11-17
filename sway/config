@@ -23,7 +23,8 @@ set $menu fuzzel
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
 # Requires: desktop-backgrounds-compat, swaybg
-# output * bg /usr/share/backgrounds/default.png fill
+output * bg /usr/share/backgrounds/default.png fill
+
 output * max_render_time off
 bindsym $super+8 output * max_render_time 2
 bindsym $super+9 output * max_render_time 5
@@ -241,8 +242,8 @@ bindsym $super+l mode "$mode_system"
 
 exec_always xrdb ~/.Xresources
 
-# Hide cursor after 1s inactivity
-seat * hide_cursor 1000
+# Hide cursor after inactivity
+seat * hide_cursor 3000
 
 titlebar_border_thickness 0
 titlebar_padding 5 0

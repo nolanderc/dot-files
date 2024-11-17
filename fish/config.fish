@@ -41,3 +41,4 @@ alias gd='git diff'
 set EDITOR vim
 set VISUAL vim
 
+source "$HOME/.cargo/env.fish"
