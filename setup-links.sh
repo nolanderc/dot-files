@@ -21,4 +21,6 @@ link "./fish" "$HOME/.config/fish"
 link "./i3" "$HOME/.config/i3"
 
 link "./scripts/wayland-cwd.sh" "$HOME/.local/bin/wayland-cwd.sh"
+link "./scripts/start-terminal.sh" "$HOME/.local/bin/start-terminal.sh"
+link "./Xresources" "$HOME/.Xresources"
 

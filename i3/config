@@ -29,17 +29,16 @@ exec_always --no-startup-id xinput set-prop 'ELAN1201:00 04F3:3098 Touchpad' 'li
 # Tap to click
 exec_always --no-startup-id xinput set-prop 'ELAN1201:00 04F3:3098 Touchpad' 'libinput Tapping Enabled' 1
 
+# Natural scrolling
+exec_always --no-startup-id xinput set-prop 'ELAN1201:00 04F3:3098 Touchpad' 'libinput Natural Scrolling' 1
+
 exec --no-startup-id xsetroot -solid "#492236"
 
 set $xkbmap setxkbmap -option caps:escape
-exec_always --no-startup-id $xkbmap 'us'
-bindsym Mod4+1 exec $xkbmap 'us'
+exec_always --no-startup-id $xkbmap 'se(us)'
+bindsym Mod4+1 exec $xkbmap 'se(us)'
 bindsym Mod4+2 exec $xkbmap 'us(dvorak)'
 bindsym Mod4+3 exec $xkbmap 'se(svdvorak)'
-
-# This font is widely installed, provides lots of unicode glyphs, right-to-left
-# text rendering and scalability on retina/hidpi displays (thanks to pango).
-#font pango:DejaVu Sans Mono 8
 
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
@@ -84,9 +83,15 @@ bindsym $mod+Shift+w kill
 bindsym --release button2 kill
 
 # start dmenu (a program launcher)
-bindsym $mod+space exec --no-startup-id dmenu_run
+# bindsym $mod+space exec --no-startup-id dmenu_run
 # A more modern dmenu replacement is rofi:
-# bindcode $mod+40 exec "rofi -modi drun,run -show drun"
+bindsym $mod+space exec rofi -show combi -modes combi -combi-modes drun \
+    -display-combi "" \
+    -display-drun "" \
+    -show-icons \
+    -font 'Comic Code 12' \
+    -fuzzy \
+    || dmenu_run
 # There also is i3-dmenu-desktop which only displays applications shipping a
 # .desktop file. It is a wrapper around dmenu, so you need that installed.
 # bindcode $mod+40 exec --no-startup-id i3-dmenu-desktop
@@ -128,13 +133,13 @@ bindsym $mod+f fullscreen toggle
 bindsym $mod+Ctrl+space floating toggle
 
 # change focus between tiling / floating windows
-# bindsym $mod+space focus mode_toggle
+bindsym $mod+Shift+space focus mode_toggle
 
-# focus the parent container
+bindsym $mod+Ctrl+minus move scratchpad
+bindsym $mod+minus scratchpad show
+
 bindsym $mod+a focus parent
-
-# focus the child container
-#bindsym $mod+d focus child
+bindsym $mod+o focus child
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
@@ -205,7 +210,7 @@ bar {
 }
 
 
-set $bg #f3f4e1
+set $bg #f2e5cc
 set $red #cc241d
 set $green #98971a
 set $yellow #d79921
@@ -221,8 +226,8 @@ set $white #ffffff
 
 #class                   border       background   text        indicator    child_border
 client.focused           $purple      $bg          $darkgray  $mediumgray  $purple
-client.focused_inactive  $mediumgray  $mediumgray  $darkgray  $black       $mediumgray
-client.unfocused         $darkgray    $lightgray   $darkgray  $black       $black
+client.focused_inactive  $mediumgray  $lightgray  $darkgray  $black       $mediumgray
+client.unfocused         $darkgray    $lightgray  $darkgray  $black       $black
 client.urgent            $red         $red         $white      $red         $red
 
 hide_edge_borders both
@@ -249,14 +254,17 @@ bindsym XF86PowerOff mode "$mode_system"
 
 set $mode_media Media    [j] Brightness [k]     [h] Volume [l]
 mode "$mode_media" {
-    bindsym j exec --no-startup-id brightnessctl s 10%-
-    bindsym k exec --no-startup-id brightnessctl s 10%+
+    bindsym j exec --no-startup-id brightnessctl s 5%-
+    bindsym k exec --no-startup-id brightnessctl s 5%+
+
+    bindsym h exec --no-startup-id amixer set Master playback 5%-
+    bindsym l exec --no-startup-id amixer set Master playback 5%+
+
     bindsym Escape mode "default"
     bindsym Return mode "default"
 }
 bindsym Mod4+m mode "$mode_media"
 
-
 for_window [class="Blueman-manager"] floating enable
-for_window [title="card-rush"] floating enable
+for_window [class="Pavucontrol"] floating enable
 

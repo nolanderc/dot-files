@@ -10,45 +10,45 @@
 
 *.vt100.saveLines: 10000
 
-*vt100.background: gray10
-*vt100.foreground: #ebdbb2
-*vt100.color0: #262628
-*vt100.color8: #928374
-*vt100.color1: #CC241D
-*vt100.color9: #fb4934
-*vt100.color2: #98971a
-*vt100.color10: #b8bb26
-*vt100.color3: #FF8F15
-*vt100.color11: #FFAF00
-*vt100.color4: #458588
-*vt100.color12: #83a598
-*vt100.color5: #b16286
-*vt100.color13: #d3869b
-*vt100.color6: #689d6a
-*vt100.color14: #8ec07c
-*vt100.color7: #a89984
-*vt100.color15: #ebdbb2
+! *vt100.background: gray10
+! *vt100.foreground: #ebdbb2
+! *vt100.color0: #262628
+! *vt100.color8: #928374
+! *vt100.color1: #CC241D
+! *vt100.color9: #fb4934
+! *vt100.color2: #98971a
+! *vt100.color10: #b8bb26
+! *vt100.color3: #FF8F15
+! *vt100.color11: #FFAF00
+! *vt100.color4: #458588
+! *vt100.color12: #83a598
+! *vt100.color5: #b16286
+! *vt100.color13: #d3869b
+! *vt100.color6: #689d6a
+! *vt100.color14: #8ec07c
+! *vt100.color7: #a89984
+! *vt100.color15: #ebdbb2
 
-/* *background: #f9f5d7 */
-/* *background: #fbf1c7 */
-/* *background: #f2e5bc */
-/* *foreground: #3c3836 */
-/* *color0:  #fdf4c1 */
-/* *color8:  #928374 */
-/* *color1:  #cc241d */
-/* *color9:  #9d0006 */
-/* *color2:  #98971a */
-/* *color10: #79740e */
-/* *color3:  #d79921 */
-/* *color11: #b57614 */
-/* *color4:  #458588 */
-/* *color12: #076678 */
-/* *color5:  #b16286 */
-/* *color13: #8f3f71 */
-/* *color6:  #689d6a */
-/* *color14: #427b58 */
-/* *color7:  #7c6f64 */
-/* *color15: #3c3836 */
+! *vt100.background: #f9f5d7
+! *vt100.background: #fbf1c7
+*vt100.background: #f2e5bc
+*vt100.foreground: #000000
+*vt100.color0:  #fdf4c1
+*vt100.color8:  #928374
+*vt100.color1:  #cc241d
+*vt100.color9:  #9d0006
+*vt100.color2:  #98971a
+*vt100.color10: #79740e
+*vt100.color3:  #d79921
+*vt100.color11: #b57614
+*vt100.color4:  #458588
+*vt100.color12: #076678
+*vt100.color5:  #b16286
+*vt100.color13: #8f3f71
+*vt100.color6:  #689d6a
+*vt100.color14: #427b58
+*vt100.color7:  #7c6f64
+*vt100.color15: #3c3836
 
 
 *.vt100.geometry: 120x50
