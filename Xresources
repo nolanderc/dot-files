@@ -57,14 +57,14 @@
 
 *.renderFont: true
 *.vt100.faceName: Comic Code
-*.vt100.faceSize: 10
+*.vt100.faceSize:  10
 *.vt100.faceSize1:  6
 *.vt100.faceSize2:  7
 *.vt100.faceSize3:  8
 *.vt100.faceSize4:  9
 *.vt100.faceSize5: 10
-*.vt100.faceSize6: 11
-*.vt100.faceSize7: 12
+*.vt100.faceSize6: 12
+*.vt100.faceSize7: 14
 
 *.vt100.scaleHeight: 1.3
 
