@@ -8,21 +8,21 @@ set fish_greeting
 
 set -g fish_key_bindings fish_hybrid_key_bindings
 
-function fish_prompt
-    # Prompt status only if it's not 0 (keep this first)
-    set -l last_status $status
-    set -l stat
-    if test $last_status -ne 0
-        set stat (set_color --dim red)" [$last_status]"(set_color normal)
-    end
-
-    string join '' -- \
-        (set_color --bold) \
-        (set_color cyan) (prompt_pwd --full-length-dirs 2) \
-        (set_color blue) (fish_vcs_prompt) \
-        $stat \
-        (set_color normal) ' '
-end
+# function fish_prompt
+#     # Prompt status only if it's not 0 (keep this first)
+#     set -l last_status $status
+#     set -l stat
+#     if test $last_status -ne 0
+#         set stat (set_color --dim red)" [$last_status]"(set_color normal)
+#     end
+#
+#     string join '' -- \
+#         (set_color --bold) \
+#         (set_color cyan) (prompt_pwd --full-length-dirs 2) \
+#         (set_color blue) (fish_vcs_prompt) \
+#         $stat \
+#         (set_color normal) ' '
+# end
 
 fish_config theme choose 'None'
 set fish_color_valid_path --italics
@@ -42,3 +42,12 @@ set EDITOR vim
 set VISUAL vim
 
 source "$HOME/.cargo/env.fish"
+
+direnv hook fish | source
+
+set tide_left_prompt_items pwd newline character
+set tide_right_prompt_items status cmd_duration context jobs direnv node python rustc java php pulumi ruby go gcloud kubectl distrobox toolbox terraform aws nix_shell crystal elixir zig jj git
+
+function jjd
+    jj edit "description($argv[1])"
+end

@@ -55,7 +55,8 @@ hi @text.diff.add guifg=#11aa11
 hi @text.emphasis gui=italic
 hi @text.strong gui=bold
 
-hi @string.escape gui=italic guifg=#C38834
+hi String guifg=#215e28
+hi @string.escape gui=bold guifg=#C38834
 hi @string.special gui=italic
 
 hi @text.environment gui=bold guifg=#883322

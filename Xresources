@@ -73,7 +73,7 @@ Xft.autohint: 1
 Xft.hintstyle: hintslight
 Xft.rgba: rgb
 
-*.VT100.Translations: #override \
+*.vt100.Translations: #override \
     Shift Ctrl<Key>V: insert-selection(CLIPBOARD) \n\
     Shift Ctrl<Key>V: insert-selection(PRIMARY) \n\
     Shift<Btn1Down>: select-start() \n\
@@ -89,4 +89,10 @@ Xft.rgba: rgb
     Shift <KeyPress>6:string("^")
 
 *selectToClipboard: true
+
+/* Hide cursor while typing, regardless of if the application has mouse focus */
+*.pointerMode: 2
+
+Xcursor.theme: Adwaita
+Xcursor.size: 32
 

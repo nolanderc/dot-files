@@ -35,7 +35,7 @@ exec_always --no-startup-id xinput set-prop 'ELAN1201:00 04F3:3098 Touchpad' 'li
 exec --no-startup-id xsetroot -solid "#492236"
 
 set $xkbmap setxkbmap -option caps:escape
-exec_always --no-startup-id $xkbmap 'se(us)'
+exec_always --no-startup-id $xkbmap 'us(dvorak)'
 bindsym Mod4+1 exec $xkbmap 'se(us)'
 bindsym Mod4+2 exec $xkbmap 'us(dvorak)'
 bindsym Mod4+3 exec $xkbmap 'se(svdvorak)'
@@ -88,7 +88,7 @@ bindsym --release button2 kill
 bindsym $mod+space exec rofi -show combi -modes combi -combi-modes drun \
     -display-combi "" \
     -display-drun "" \
-    -dpi 0 \
+    -dpi 1 \
     -show-icons \
     -font 'Comic Code 12' \
     -fuzzy \

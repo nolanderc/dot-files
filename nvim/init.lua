@@ -104,6 +104,7 @@ nmap([[<leader>O]], [[<cmd>Telescope find_files cwd=%:h<CR>]])
 nmap([[<leader>F]], [[<cmd>Telescope live_grep<CR>]])
 nmap([[<leader>l]], [[<cmd>lua require('telescope.builtin').find_files{no_ignore=true}<CR>]])
 nmap([[<leader>L]], [[<cmd>lua require('telescope.builtin').live_grep{no_ignore=true}<CR>]])
+nmap([[<leader>e]], [[<cmd>Oil<CR>]])
 
 -- Edit a new file relative to current file
 nmap([[<Leader>t]], [[:tabe <C-R>=expand("%:~:.:h") . "/" <CR>]], { silent = false })
@@ -268,6 +269,14 @@ require('lazy').setup({
         },
     },
     'folke/neoconf.nvim',
+    {
+        'stevearc/oil.nvim',
+        opts = {},
+        -- dependencies = { { "echasnovski/mini.icons", opts = {} } },
+        -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
+        -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
+        lazy = false,
+    },
     --- }}}
 
     -- LSP {{{
@@ -308,6 +317,8 @@ require('lazy').setup({
                     "python",
                     "json",
                     "jsonc",
+                    "nix",
+                    "typst",
                 },
                 sync_install = false,
                 highlight = { enable = true },
@@ -522,6 +533,11 @@ lspconfig.ts_ls.setup { capabilities = capabilities, on_attach = on_attach }
 lspconfig.html.setup { capabilities = capabilities, on_attach = on_attach }
 lspconfig.cssls.setup { capabilities = capabilities, on_attach = on_attach }
 lspconfig.ruff.setup { capabilities = capabilities, on_attach = on_attach }
+lspconfig.nixd.setup { capabilities = capabilities, on_attach = on_attach }
+
+lspconfig.bacon_ls.setup { capabilities = capabilities, on_attach = on_attach, settings = {
+    locationsFile = ".bacon-locations",
+} }
 
 lspconfig.rust_analyzer.setup {
     capabilities = capabilities,
@@ -653,8 +669,7 @@ vim.cmd [[hi link @keyword.storage.lifetime.rust Comment]]
 -- }}}
 
 -- LANGUAGES {{{
-vim.cmd [[autocmd FileType glsl setlocal commentstring=//\ %s]]
-vim.cmd [[autocmd FileType wgsl setlocal commentstring=//\ %s]]
-vim.cmd [[autocmd FileType json setlocal shiftwidth=2]]
-vim.cmd [[autocmd FileType json setlocal tabstop=2]]
+vim.cmd [[autocmd FileType glsl,wgsl,typst setlocal commentstring=//\ %s]]
+vim.cmd [[autocmd FileType json,nix setlocal shiftwidth=2]]
+vim.cmd [[autocmd FileType json,nix setlocal tabstop=2]]
 -- }}}
