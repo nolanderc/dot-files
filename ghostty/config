@@ -1,0 +1,40 @@
+theme = Gruvbox Light
+font-size = 14
+
+font-family = ComicCode Nerd Font
+font-style = Medium
+
+window-decoration = none
+font-feature = -calt
+font-feature = -liga
+font-feature = -dlig
+
+unfocused-split-opacity = 1
+
+keybind = ctrl+enter=unbind
+keybind = alt+shift+f=toggle_fullscreen
+
+keybind = alt+enter=toggle_split_zoom
+
+keybind = alt+h=goto_split:left
+keybind = alt+l=goto_split:right
+keybind = alt+j=goto_split:down
+keybind = alt+k=goto_split:up
+
+keybind = alt+b=new_split:down
+keybind = alt+d=new_split:right
+keybind = alt+ctrl+b=new_split:up
+keybind = alt+ctrl+d=new_split:left
+
+keybind = alt+p=toggle_command_palette
+
+keybind = ctrl+1=decrease_font_size:1
+keybind = ctrl+2=increase_font_size:1
+
+keybind = alt+t=new_tab
+keybind = alt+shift+w=close_tab
+
+keybind = alt+ctrl+h=previous_tab
+keybind = alt+ctrl+l=next_tab
+
+keybind = ctrl+plus=unbind

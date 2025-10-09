@@ -8,11 +8,11 @@ hi Special guifg=black
 hi Statement gui=bold guifg=#111111
 hi Keyword gui=bold guifg=#111111
 
-hi Type gui=none guifg=#466703
+hi Type gui=none guifg=black
 
 hi Constant guifg=#6E4203
 
-hi Operator guifg=#777733
+hi Operator guifg=black
 hi Macro guifg=#773377
 hi @attribute gui=italic guifg=#773377
 
@@ -56,8 +56,8 @@ hi @text.emphasis gui=italic
 hi @text.strong gui=bold
 
 hi String guifg=#215e28
-hi @string.escape gui=bold guifg=#C38834
-hi @string.special gui=italic
+hi @string.escape guifg=#215e28 gui=bold
+hi @string.special guifg=#215e28 gui=italic
 
 hi @text.environment gui=bold guifg=#883322
 hi @text.environment.name guifg=#884433
@@ -67,3 +67,5 @@ hi CursorLine guibg=none
 hi Search guibg=#e3e4e1
 
 hi @lsp.mod.attribute.rust guifg=#774634
+
+hi @function.builtin guifg=black

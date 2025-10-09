@@ -37,7 +37,6 @@ alias glg='git log --graph'
 alias gs='git status'
 alias gd='git diff'
 
-
 set EDITOR vim
 set VISUAL vim
 

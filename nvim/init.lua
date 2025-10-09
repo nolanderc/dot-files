@@ -3,7 +3,7 @@
 -- GENERAL {{{
 
 -- Shortcut to edit this file
-vim.cmd [[command! Vimrc tabe ~/.config/nvim/init.lua]]
+vim.cmd [[command! Vimrc edit ~/.config/nvim/init.lua]]
 
 -- Enable mouse support
 vim.o.mouse = 'a'
@@ -112,20 +112,30 @@ nmap([[<Leader>t]], [[:tabe <C-R>=expand("%:~:.:h") . "/" <CR>]], { silent = fal
 nmap([[<Leader>n]], [[:tabe <C-R>=expand("%:~:.:r") . "/" <CR>]], { silent = false })
 
 -- Replace visually selected text in file
-vmap([[<C-r>]], [["hy:%s/\C<C-r>h/<C-r>h/g<left><left>]], { silent = false })
+vmap([[<C-r>]], [["hy:%s/<C-r>h/<C-r>h/g]], { silent = false })
 
 -- Scroll the view without the cursor
 nmap([[<C-j>]], [[5<C-e>]])
 nmap([[<C-k>]], [[5<C-y>]])
 
+-- Reflow lines without changing cursor position in text.
+nmap([[gq]], [[gw]])
+vmap([[gq]], [[gw]])
+
 -- LSP integration
 
--- Goto definition
-nmap([[gd]], [[<cmd>lua require('telescope.builtin').lsp_definitions()<CR>]])
--- Goto definition, but in a new tab
-nmap([[gD]], [[mt:tabe %<CR>`t<cmd>lua require('telescope.builtin').lsp_definitions()<CR>]])
--- Goto definition, but in a split
-nmap([[gs]], [[mt:split<CR>`t<cmd>lua require('telescope.builtin').lsp_definitions()<CR>]])
+if vim.g.vscode then
+    nmap([[gd]], [[<cmd>lua require('vscode').action('editor.action.revealDefinition')<CR>]])
+    nmap([[gD]], [[<cmd>lua require('vscode').action('editor.action.revealDefinitionAside')<CR>]])
+    nmap([[gs]], [[<cmd>lua require('vscode').action('editor.action.peekDefinition')<CR>]])
+else
+    -- Goto definition
+    nmap([[gd]], [[<cmd>lua require('telescope.builtin').lsp_definitions()<CR>]])
+    -- Goto definition, but in a new tab
+    nmap([[gD]], [[mt:tabe %<CR>`t<cmd>lua require('telescope.builtin').lsp_definitions()<CR>]])
+    -- Goto definition, but in a split
+    nmap([[gs]], [[mt:split<CR>`t<cmd>lua require('telescope.builtin').lsp_definitions()<CR>]])
+end
 
 -- Search workspace symbols
 nmap([[<leader>S]], [[<cmd>lua require('telescope.builtin').lsp_dynamic_workspace_symbols()<CR>]])
@@ -145,12 +155,17 @@ nmap([[gh]], [[<cmd>lua vim.lsp.buf.hover()<CR>]])
 -- Show the signature of the current function
 nmap([[gH]], [[<cmd>lua vim.lsp.buf.signature_help()<CR>]])
 
-nmap([[gR]], [[<cmd>lua require('telescope.builtin').lsp_references()<CR>]])
 nmap([[gI]], [[<cmd>lua vim.lsp.buf.incoming_calls()<CR>]])
 nmap([[gi]], [[<cmd>lua vim.diagnostic.open_float()<CR>]])
 nmap([[gr]], [[<cmd>lua vim.lsp.buf.rename()<CR>]])
 nmap([[ga]], [[<cmd>lua vim.lsp.buf.code_action()<CR>]])
 nmap([[<leader>f]], [[<cmd>lua vim.lsp.buf.format()<CR>]])
+
+if vim.g.vscode then
+    nmap([[gR]], [[<cmd>lua vim.lsp.buf.references()<CR>]])
+else
+    nmap([[gR]], [[<cmd>lua require('telescope.builtin').lsp_references()<CR>]])
+end
 
 nmap([[<C-Space>]], [[<cmd>lua vim.lsp.buf.signature_help()<CR>]])
 imap([[<C-Space>]], [[<cmd>lua vim.lsp.buf.signature_help()<CR>]])
@@ -160,14 +175,22 @@ vmap([[ga]], [[<cmd>lua vim.lsp.buf.code_action()<CR>]])
 vmap([[<leader>f]], [[<cmd>lua vim.lsp.buf.format()<CR>]])
 
 -- Goto diagnostics
-nmap([[gn]], [[<cmd>lua vim.diagnostic.goto_next({ severity = { min = vim.diagnostic.severity.WARN } })<CR>]])
-nmap([[gp]], [[<cmd>lua vim.diagnostic.goto_prev({ severity = { min = vim.diagnostic.severity.WARN } })<CR>]])
-nmap([[gN]], [[<cmd>lua vim.diagnostic.goto_next({})<CR>]])
-nmap([[gP]], [[<cmd>lua vim.diagnostic.goto_prev({})<CR>]])
+if vim.g.vscode then
+    nmap([[gn]], [[<cmd>lua require('vscode').action('editor.action.marker.next')<CR>]])
+    nmap([[gp]], [[<cmd>lua require('vscode').action('editor.action.marker.prev')<CR>]])
+    nmap([[gN]], [[<cmd>lua require('vscode').action('editor.action.marker.nextInFiles')<CR>]])
+    nmap([[gP]], [[<cmd>lua require('vscode').action('editor.action.marker.prevInFiles')<CR>]])
+else
+    nmap([[gn]], [[<cmd>lua vim.diagnostic.goto_next({ severity = { min = vim.diagnostic.severity.WARN } })<CR>]])
+    nmap([[gp]], [[<cmd>lua vim.diagnostic.goto_prev({ severity = { min = vim.diagnostic.severity.WARN } })<CR>]])
+    nmap([[gN]], [[<cmd>lua vim.diagnostic.goto_next({})<CR>]])
+    nmap([[gP]], [[<cmd>lua vim.diagnostic.goto_prev({})<CR>]])
+end
 
 -- wrap in Option/Result
 vmap([[SO]], [[<ESC>`>a><ESC>`<iOption<<ESC>b]])
 vmap([[SR]], [[<ESC>`>a><ESC>`<iResult<<ESC>b]])
+
 
 -- Start inserting on right indentation
 vim.cmd [[
@@ -227,7 +250,6 @@ require('lazy').setup({
     { 'terrortylor/nvim-comment', name = 'nvim_comment', opts = {} },
     {
         'nvim-telescope/telescope.nvim',
-        tag = '0.1.4',
         dependencies = { 'nvim-lua/plenary.nvim' },
         config = function()
             require 'telescope'.setup {
@@ -281,6 +303,10 @@ require('lazy').setup({
 
     -- LSP {{{
     'neovim/nvim-lspconfig',
+    {
+        "mason-org/mason.nvim",
+        opts = {},
+    },
     'hrsh7th/cmp-nvim-lsp',
     'hrsh7th/cmp-buffer',
     -- 'hrsh7th/cmp-path',
@@ -301,34 +327,34 @@ require('lazy').setup({
     'NoahTheDuke/vim-just',
     'DingDean/wgsl.vim',
     'rust-lang/rust.vim',
-    {
-        "nvim-treesitter/nvim-treesitter",
-        build = ":TSUpdate",
-        config = function()
-            local configs = require("nvim-treesitter.configs")
-
-            configs.setup({
-                ensure_installed = {
-                    "zig",
-                    "rust",
-                    "lua",
-                    "javascript",
-                    "html",
-                    "python",
-                    "json",
-                    "jsonc",
-                    "nix",
-                    "typst",
-                },
-                sync_install = false,
-                highlight = { enable = true },
-                indent = {
-                    enable = true,
-                    disable = { "zig" },
-                },
-            })
-        end
-    },
+    -- {
+    --     "nvim-treesitter/nvim-treesitter",
+    --     build = ":TSUpdate",
+    --     config = function()
+    --         local configs = require("nvim-treesitter.configs")
+    --
+    --         configs.setup({
+    --             ensure_installed = {
+    --                 "zig",
+    --                 "rust",
+    --                 "lua",
+    --                 "javascript",
+    --                 "html",
+    --                 "python",
+    --                 "json",
+    --                 "jsonc",
+    --                 "nix",
+    --                 "typst",
+    --             },
+    --             sync_install = false,
+    --             highlight = { enable = true },
+    --             indent = {
+    --                 enable = true,
+    --                 disable = { "zig" },
+    --             },
+    --         })
+    --     end
+    -- },
     -- }}}
 
     --- Themes {{{
@@ -336,6 +362,18 @@ require('lazy').setup({
     'Shatur/neovim-ayu',
     --- }}}
 })
+
+-- LANGUAGES {{{
+vim.cmd [[autocmd FileType glsl,wgsl,typst setlocal commentstring=//\ %s]]
+vim.cmd [[autocmd FileType json,nix setlocal shiftwidth=2]]
+vim.cmd [[autocmd FileType json,nix setlocal tabstop=2]]
+-- }}}
+
+
+-- Skip all LSP/completion/syntax configuration
+if vim.g.vscode then
+    return
+end
 
 -- Completions {{{
 local cmp = require 'cmp'
@@ -507,106 +545,47 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 
 -- LSP Servers {{{
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local lspconfig = require('lspconfig')
 
-local LspAutoFormatGroup = vim.api.nvim_create_augroup("LspFormatting", {})
-function on_attach(client, bufnr)
-    if client.supports_method("textDocument/formatting") then
-        vim.api.nvim_clear_autocmds({ group = LspAutoFormatGroup, buffer = bufnr })
-        vim.api.nvim_create_autocmd("BufWritePre", {
-            group = LspAutoFormatGroup,
-            buffer = bufnr,
-            callback = function()
-                vim.lsp.buf.format()
-            end,
-        })
-    end
-end
+-- local LspAutoFormatGroup = vim.api.nvim_create_augroup("LspFormatting", {})
+-- function on_attach(client, bufnr)
+--     if client.supports_method("textDocument/formatting") then
+--         vim.api.nvim_clear_autocmds({ group = LspAutoFormatGroup, buffer = bufnr })
+--         vim.api.nvim_create_autocmd("BufWritePre", {
+--             group = LspAutoFormatGroup,
+--             buffer = bufnr,
+--             callback = function()
+--                 vim.lsp.buf.format()
+--             end,
+--         })
+--     end
+-- end
 
-lspconfig.zls.setup { capabilities = capabilities, on_attach = on_attach }
-lspconfig.pyright.setup { capabilities = capabilities, on_attach = on_attach }
-lspconfig.glsl_analyzer.setup { capabilities = capabilities, on_attach = on_attach }
-lspconfig.ocamllsp.setup { capabilities = capabilities, on_attach = on_attach }
-lspconfig.clangd.setup { capabilities = capabilities, on_attach = on_attach }
-lspconfig.taplo.setup { capabilities = capabilities, on_attach = on_attach }
-lspconfig.ts_ls.setup { capabilities = capabilities, on_attach = on_attach }
-lspconfig.html.setup { capabilities = capabilities, on_attach = on_attach }
-lspconfig.cssls.setup { capabilities = capabilities, on_attach = on_attach }
-lspconfig.ruff.setup { capabilities = capabilities, on_attach = on_attach }
-lspconfig.nixd.setup { capabilities = capabilities, on_attach = on_attach }
+-- Format on save
+vim.api.nvim_create_autocmd('BufWritePre',{
+  callback = function(ev)
+    vim.lsp.buf.format()
+  end
+})
 
-lspconfig.bacon_ls.setup { capabilities = capabilities, on_attach = on_attach, settings = {
-    locationsFile = ".bacon-locations",
-} }
-
-lspconfig.rust_analyzer.setup {
-    capabilities = capabilities,
-    on_attach = on_attach,
-    settings = {
-        ['rust-analyzer'] = {
-            checkOnSave = { command = 'clippy' },
-            diagnostics = {
-                warningsAsHint = {
-                    'dead_code',
-                    'unused_variables',
-                    'unused_assignments',
-                },
-            },
-        },
-    },
-}
-
-lspconfig.jsonls.setup { capabilities = capabilities, on_attach = on_attach }
-lspconfig.lua_ls.setup { capabilities = capabilities, on_attach = on_attach, on_init = function(client)
-    local path = client.workspace_folders[1].name
-    if vim.loop.fs_stat(path .. '/.luarc.json') or vim.loop.fs_stat(path .. '/.luarc.jsonc') then
-        return
-    end
-
-    client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
-        runtime = {
-            version = 'LuaJIT'
-        },
-        workspace = {
-            checkThirdParty = false,
-            library = {
-                vim.env.VIMRUNTIME
-            }
-            -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
-            -- library = vim.api.nvim_get_runtime_file("", true)
-        }
+-- Fix all Zig issues before save (unused variables and such)
+vim.api.nvim_create_autocmd('BufWritePre',{
+  pattern = {"*.zig", "*.zon"},
+  callback = function(ev)
+    vim.lsp.buf.code_action({
+      context = { only = { "source.fixAll" } },
+      apply = true,
     })
-end }
-lspconfig.glasgow.setup { capabilities = capabilities, on_attach = on_attach }
+  end
+})
+-- vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]]
+
+vim.lsp.enable('zls')
+vim.lsp.enable('clangd')
+vim.lsp.enable('pyright')
+vim.lsp.enable('ruff')
+vim.lsp.enable('rust_analyzer')
 
 vim.cmd [[ nmap <F8> :LspRestart<CR>:edit<CR> ]]
-
--- vim.lsp.handlers["wgsl-analyzer/requestConfiguration"] = function(err, result, ctx, config)
---     return {
---         success = true,
---         customImports = { _dummy_ = "dummy"},
---         shaderDefs = {},
---         trace = {
---             extension = false,
---             server = false,
---         },
---         inlayHints = {
---             enabled = false,
---             typeHints = false,
---             parameterHints = false,
---             structLayoutHints = false,
---             typeVerbosity = "inner",
---         },
---         diagnostics = {
---             typeErrors = true,
---             nagaParsingErrors = true,
---             nagaValidationErrors = true,
---             nagaVersion = "main",
---         }
---     }
--- end
--- lspconfig.wgsl_analyzer.setup { capabilities = capabilities }
--- }}}
 
 -- Other {{{
 vim.g.zig_fmt_autosave = 0
@@ -666,10 +645,4 @@ vim.cmd [[hi link @keyword.storage.lifetime.rust Comment]]
 --   vim.api.nvim_set_hl(0, group, {})
 -- end
 
--- }}}
-
--- LANGUAGES {{{
-vim.cmd [[autocmd FileType glsl,wgsl,typst setlocal commentstring=//\ %s]]
-vim.cmd [[autocmd FileType json,nix setlocal shiftwidth=2]]
-vim.cmd [[autocmd FileType json,nix setlocal tabstop=2]]
 -- }}}
