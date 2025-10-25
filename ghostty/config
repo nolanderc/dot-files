@@ -11,6 +11,8 @@ font-feature = -dlig
 
 unfocused-split-opacity = 1
 
+mouse-hide-while-typing = true
+
 keybind = ctrl+enter=unbind
 keybind = alt+shift+f=toggle_fullscreen
 

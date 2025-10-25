@@ -320,42 +320,42 @@ require('lazy').setup({
     -- 'saadparwaiz1/cmp_luasnip',
     -- }}}
 
-    -- Languages {{{
+    --- Languages {{{
     'ziglang/zig.vim',
     'fladson/vim-kitty',
     'tikhomirov/vim-glsl',
     'NoahTheDuke/vim-just',
     'DingDean/wgsl.vim',
     'rust-lang/rust.vim',
-    -- {
-    --     "nvim-treesitter/nvim-treesitter",
-    --     build = ":TSUpdate",
-    --     config = function()
-    --         local configs = require("nvim-treesitter.configs")
-    --
-    --         configs.setup({
-    --             ensure_installed = {
-    --                 "zig",
-    --                 "rust",
-    --                 "lua",
-    --                 "javascript",
-    --                 "html",
-    --                 "python",
-    --                 "json",
-    --                 "jsonc",
-    --                 "nix",
-    --                 "typst",
-    --             },
-    --             sync_install = false,
-    --             highlight = { enable = true },
-    --             indent = {
-    --                 enable = true,
-    --                 disable = { "zig" },
-    --             },
-    --         })
-    --     end
-    -- },
-    -- }}}
+    {
+        "nvim-treesitter/nvim-treesitter",
+        build = ":TSUpdate",
+        config = function()
+            local configs = require("nvim-treesitter.configs")
+    
+            configs.setup({
+                ensure_installed = {
+                    "zig",
+                    "rust",
+                    "lua",
+                    "javascript",
+                    "html",
+                    "python",
+                    "json",
+                    "jsonc",
+                    "nix",
+                    "typst",
+                },
+                sync_install = false,
+                highlight = { enable = true },
+                indent = {
+                    enable = true,
+                    disable = { "zig" },
+                },
+            })
+        end
+    },
+    --- }}}
 
     --- Themes {{{
     'morhetz/gruvbox',
