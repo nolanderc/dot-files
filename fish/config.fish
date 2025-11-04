@@ -1,3 +1,5 @@
+fish_add_path ~/.local/bin
+
 zoxide init fish | source
 
 if status is-interactive
