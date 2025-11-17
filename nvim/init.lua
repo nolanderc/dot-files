@@ -584,6 +584,7 @@ vim.lsp.enable('clangd')
 vim.lsp.enable('pyright')
 vim.lsp.enable('ruff')
 vim.lsp.enable('rust_analyzer')
+vim.lsp.enable('wgsl_analyzer')
 
 vim.cmd [[ nmap <F8> :LspRestart<CR>:edit<CR> ]]
 
