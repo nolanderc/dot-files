@@ -158,7 +158,13 @@ nmap([[gH]], [[<cmd>lua vim.lsp.buf.signature_help()<CR>]])
 nmap([[gI]], [[<cmd>lua vim.lsp.buf.incoming_calls()<CR>]])
 nmap([[gi]], [[<cmd>lua vim.diagnostic.open_float()<CR>]])
 nmap([[gr]], [[<cmd>lua vim.lsp.buf.rename()<CR>]])
-nmap([[ga]], [[<cmd>lua vim.lsp.buf.code_action()<CR>]])
+
+if vim.g.vscode then
+    nmap([[ga]], [[<cmd>lua require('vscode').action('editor.action.quickFix')<CR>]])
+else
+    nmap([[ga]], [[<cmd>lua vim.lsp.buf.code_action()<CR>]])
+end
+
 nmap([[<leader>f]], [[<cmd>lua vim.lsp.buf.format()<CR>]])
 
 if vim.g.vscode then
@@ -170,9 +176,6 @@ end
 nmap([[<C-Space>]], [[<cmd>lua vim.lsp.buf.signature_help()<CR>]])
 imap([[<C-Space>]], [[<cmd>lua vim.lsp.buf.signature_help()<CR>]])
 vmap([[<C-Space>]], [[<cmd>lua vim.lsp.buf.signature_help()<CR>]])
-
-vmap([[ga]], [[<cmd>lua vim.lsp.buf.code_action()<CR>]])
-vmap([[<leader>f]], [[<cmd>lua vim.lsp.buf.format()<CR>]])
 
 -- Goto diagnostics
 if vim.g.vscode then
@@ -342,6 +345,7 @@ require('lazy').setup({
                     "html",
                     "python",
                     "json",
+                    "jsonnet",
                     "jsonc",
                     "nix",
                     "typst",
@@ -362,6 +366,14 @@ require('lazy').setup({
     'Shatur/neovim-ayu',
     --- }}}
 })
+
+-- FILETYPES {{{
+vim.filetype.add({
+  filename = {
+    [".bazelrc"] = "sh",
+  },
+})
+-- }}}
 
 -- LANGUAGES {{{
 vim.cmd [[autocmd FileType glsl,wgsl,typst setlocal commentstring=//\ %s]]
@@ -584,7 +596,7 @@ vim.lsp.enable('clangd')
 vim.lsp.enable('pyright')
 vim.lsp.enable('ruff')
 vim.lsp.enable('rust_analyzer')
-vim.lsp.enable('wgsl_analyzer')
+vim.lsp.enable('starlark_rust')
 
 vim.cmd [[ nmap <F8> :LspRestart<CR>:edit<CR> ]]
 
@@ -601,13 +613,13 @@ vim.g.zig_fmt_parse_errors = 0
 vim.cmd [[syntax on]]
 
 vim.o.termguicolors = true
-vim.o.background = 'light'
+vim.o.background = 'dark'
 vim.g.gruvbox_italic = 1
 vim.g.gruvbox_contrast_light = 'medium'
 vim.g.gruvbox_invert_selection = 0
 -- vim.cmd.colorscheme('paperdark')
-vim.cmd.colorscheme('paperlight')
-vim.cmd [[ set cursorline ]]
+vim.cmd.colorscheme('gruvbox')
+vim.cmd [[ set nocursorline ]]
 
 vim.cmd [[ hi diffAdded guifg=#38ce35 ]]
 vim.cmd [[ hi diffRemoved guifg=#ed7c63 ]]

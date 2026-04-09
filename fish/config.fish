@@ -26,7 +26,7 @@ set -g fish_key_bindings fish_hybrid_key_bindings
 #         (set_color normal) ' '
 # end
 
-fish_config theme choose 'None'
+fish_config theme choose 'ayu Dark'
 set fish_color_valid_path --italics
 
 alias l='ls -lh'
