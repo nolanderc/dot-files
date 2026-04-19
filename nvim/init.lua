@@ -376,7 +376,7 @@ vim.filetype.add({
 -- }}}
 
 -- LANGUAGES {{{
-vim.cmd [[autocmd FileType glsl,wgsl,typst setlocal commentstring=//\ %s]]
+vim.cmd [[autocmd FileType glsl,wgsl,typst,json setlocal commentstring=//\ %s]]
 vim.cmd [[autocmd FileType json,nix setlocal shiftwidth=2]]
 vim.cmd [[autocmd FileType json,nix setlocal tabstop=2]]
 -- }}}
