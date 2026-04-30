@@ -1,0 +1,103 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "autosave": "on_focus_change",
+  "go_to_definition_fallback": "find_all_references",
+  "disable_ai": true,
+  "agent_ui_font_size": 14.0,
+  "icon_theme": {
+    "mode": "dark",
+    "light": "Zed (Default)",
+    "dark": "Zed (Default)",
+  },
+  "git": {
+    "inline_blame": {
+      "show_commit_summary": false,
+      "padding": 20,
+      "min_column": 100,
+      "delay_ms": 0,
+      "enabled": true,
+    },
+  },
+  "search": {
+    "center_on_match": false,
+  },
+  "use_smartcase_search": true,
+  "agent": {
+    "button": false,
+    "favorite_models": [],
+    "model_parameters": [],
+  },
+  "project_panel": {
+    "dock": "left",
+  },
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false,
+  },
+  "cli_default_open_behavior": "existing_window",
+  "buffer_line_height": "comfortable",
+  "buffer_font_family": "ComicCode Nerd Font",
+  "terminal": {
+    "toolbar": {
+      "breadcrumbs": false,
+    },
+    "copy_on_select": true,
+    "blinking": "off",
+    "show_count_badge": false,
+    "font_family": "ComicCode Nerd Font",
+    "flexible": true,
+    "dock": "right",
+  },
+  "vim": {
+    "use_smartcase_find": true,
+    "use_system_clipboard": "on_yank",
+  },
+  "vim_mode": true,
+  "ui_font_size": 15.0,
+  "buffer_font_size": 14.0,
+  "theme": {
+    "mode": "dark",
+    "light": "One Light",
+    "dark": "Gruvbox Dark Soft",
+  },
+  "theme_overrides": {
+    "Gruvbox Dark Soft": {
+      "syntax": {
+        "keyword": {
+          "font_weight": 800,
+        },
+        "function": {
+          "color": "#A3C5B8",
+        },
+        "function.kwargs": {
+          "color": "#EBDBB2",
+        },
+        "punctuation.delimiter": {
+          "color": "#A89984",
+        },
+      },
+    },
+  },
+  "languages": {
+    "Starlark": {
+      "formatter": {
+        "external": {
+          "command": "buildifier",
+          "arguments": [
+            "--mode=fix",
+            "--lint=fix",
+            "--warnings=all",
+            "--path={buffer_path}",
+          ],
+        },
+      },
+    },
+  },
+}

@@ -1,0 +1,84 @@
+// Zed keymap
+//
+// For information on binding keys, see the Zed
+// documentation: https://zed.dev/docs/key-bindings
+//
+// To see the default key bindings run `zed: open default keymap`
+// from the command palette.
+[
+  {
+    "bindings": {
+      "ctrl-,": "zed::OpenSettingsFile",
+      "ctrl-shift-,": "zed::OpenKeymapFile",
+      "alt-h": "workspace::ActivatePaneLeft",
+      "alt-l": "workspace::ActivatePaneRight",
+      "alt-k": "workspace::ActivatePaneUp",
+      "alt-j": "workspace::ActivatePaneDown",
+      "ctrl-alt-h": "workspace::ActivatePaneLeft",
+      "ctrl-alt-l": "workspace::ActivatePaneRight",
+      "ctrl-alt-k": "workspace::ActivatePaneUp",
+      "ctrl-alt-j": "workspace::ActivatePaneDown",
+      "alt-b": "pane::SplitDown",
+      "alt-d": "pane::SplitRight",
+      "f3": "search::SelectPreviousMatch",
+      "f4": "search::SelectNextMatch",
+    },
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      "ctrl-e": "pane::RevealInProjectPanel",
+      "ctrl-f": "file_finder::Toggle",
+      "g n": "editor::GoToDiagnostic",
+      "g p": "editor::GoToPreviousDiagnostic",
+      "space f": "editor::Format",
+    },
+  },
+  {
+    "context": "Editor && vim_mode == normal",
+    "bindings": {
+      "-": "editor::SelectLine",
+    },
+  },
+  {
+    "context": "Editor && vim_mode == insert",
+    "bindings": {
+      "ctrl-v": "editor::Paste",
+    },
+  },
+  {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      "ctrl-e": "editor::ToggleFocus",
+      "f": "project_panel::NewFile",
+      "d": "project_panel::NewDirectory",
+      "x": "project_panel::Delete",
+    },
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      "ctrl-p": null,
+      "ctrl-n": null,
+    },
+  },
+  {
+    "context": "vim_mode == visual",
+    "bindings": {
+      "shift-s": "vim::PushAddSurrounds",
+    },
+  },
+  {
+    "context": "Workspace",
+    "bindings": {
+      "alt-p": "command_palette::Toggle",
+    },
+  },
+  {
+    "context": "Workspace",
+    "unbind": {
+      "ctrl-f": "file_finder::Toggle",
+      "ctrl-shift-p": "command_palette::Toggle",
+    },
+  },
+]
