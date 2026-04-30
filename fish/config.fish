@@ -10,22 +10,6 @@ set fish_greeting
 
 set -g fish_key_bindings fish_hybrid_key_bindings
 
-# function fish_prompt
-#     # Prompt status only if it's not 0 (keep this first)
-#     set -l last_status $status
-#     set -l stat
-#     if test $last_status -ne 0
-#         set stat (set_color --dim red)" [$last_status]"(set_color normal)
-#     end
-#
-#     string join '' -- \
-#         (set_color --bold) \
-#         (set_color cyan) (prompt_pwd --full-length-dirs 2) \
-#         (set_color blue) (fish_vcs_prompt) \
-#         $stat \
-#         (set_color normal) ' '
-# end
-
 fish_config theme choose 'ayu Dark'
 set fish_color_valid_path --italics
 
