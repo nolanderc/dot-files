@@ -7,9 +7,31 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "disable_ai": true,
+  "inlay_hints": {
+    "enabled": false,
+  },
+  "use_auto_surround": false,
+  "use_autoclose": false,
+  "preferred_line_length": 100,
+  "gutter": {
+    "min_line_number_digits": 4,
+  },
+  "colorize_brackets": false,
+  "auto_signature_help": true,
+  "show_signature_help_after_edits": true,
+  "snippet_sort_order": "bottom",
+  "show_edit_predictions": false,
+  "edit_predictions": {
+    "ollama": {
+      "prompt_format": "zeta",
+      "model": "lennyerik/zeta:latest",
+    },
+    "provider": "ollama",
+  },
+  "soft_wrap": "editor_width",
   "autosave": "on_focus_change",
   "go_to_definition_fallback": "find_all_references",
-  "disable_ai": true,
   "agent_ui_font_size": 14.0,
   "icon_theme": {
     "mode": "dark",
@@ -40,6 +62,10 @@
   "telemetry": {
     "diagnostics": false,
     "metrics": false,
+  },
+  "tabs": {
+    "git_status": true,
+    "file_icons": true,
   },
   "cli_default_open_behavior": "existing_window",
   "buffer_line_height": "comfortable",
@@ -90,12 +116,7 @@
       "formatter": {
         "external": {
           "command": "buildifier",
-          "arguments": [
-            "--mode=fix",
-            "--lint=fix",
-            "--warnings=all",
-            "--path={buffer_path}",
-          ],
+          "arguments": ["--mode=fix", "--lint=fix", "--warnings=all", "--path={buffer_path}"],
         },
       },
     },

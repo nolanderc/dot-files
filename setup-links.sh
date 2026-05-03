@@ -22,6 +22,7 @@ link "./i3" "$HOME/.config/i3"
 link "./jj" "$HOME/.config/jj"
 link "./ghostty" "$HOME/.config/ghostty"
 link "./tmux" "$HOME/.config/tmux"
+link "./zed" "$HOME/.config/zed"
 
 link "./scripts/wayland-cwd.sh" "$HOME/.local/bin/wayland-cwd.sh"
 link "./scripts/start-terminal.sh" "$HOME/.local/bin/start-terminal.sh"

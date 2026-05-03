@@ -9,7 +9,7 @@
   {
     "bindings": {
       "ctrl-,": "zed::OpenSettingsFile",
-      "ctrl-shift-,": "zed::OpenKeymapFile",
+      "ctrl-<": "zed::OpenKeymapFile",
       "alt-h": "workspace::ActivatePaneLeft",
       "alt-l": "workspace::ActivatePaneRight",
       "alt-k": "workspace::ActivatePaneUp",
@@ -22,22 +22,27 @@
       "alt-d": "pane::SplitRight",
       "f3": "search::SelectPreviousMatch",
       "f4": "search::SelectNextMatch",
+      "ctrl-f": "file_finder::Toggle",
+      "alt-p": "command_palette::Toggle",
+      "ctrl-enter": null,
     },
   },
   {
     "context": "Editor",
     "bindings": {
       "ctrl-e": "pane::RevealInProjectPanel",
-      "ctrl-f": "file_finder::Toggle",
-      "g n": "editor::GoToDiagnostic",
-      "g p": "editor::GoToPreviousDiagnostic",
-      "space f": "editor::Format",
+      "ctrl-t": "terminal_panel::ToggleFocus",
     },
   },
   {
     "context": "Editor && vim_mode == normal",
     "bindings": {
       "-": "editor::SelectLine",
+      "space f": "editor::Format",
+      "g n": "editor::GoToDiagnostic",
+      "g p": "editor::GoToPreviousDiagnostic",
+      "g r": "editor::Rename",
+      "g shift-r": "editor::FindAllReferences",
     },
   },
   {
@@ -53,13 +58,20 @@
       "f": "project_panel::NewFile",
       "d": "project_panel::NewDirectory",
       "x": "project_panel::Delete",
+      "r": "project_panel::Rename",
     },
   },
   {
     "context": "Terminal",
     "bindings": {
+      "ctrl-t": null,
       "ctrl-p": null,
       "ctrl-n": null,
+      "ctrl-enter": ["terminal::SendKeystroke", "enter"],
+      "ctrl-shift-enter": ["terminal::SendKeystroke", "enter"],
+      "alt-enter": ["terminal::SendKeystroke", "enter"],
+      "ctrl-alt-enter": ["terminal::SendKeystroke", "enter"],
+      "alt-shift-enter": ["terminal::SendKeystroke", "enter"],
     },
   },
   {
@@ -70,15 +82,12 @@
   },
   {
     "context": "Workspace",
-    "bindings": {
-      "alt-p": "command_palette::Toggle",
-    },
+    "bindings": {},
   },
   {
-    "context": "Workspace",
+    "context": "Terminal",
     "unbind": {
-      "ctrl-f": "file_finder::Toggle",
-      "ctrl-shift-p": "command_palette::Toggle",
+      "ctrl-enter": "assistant::InlineAssist",
     },
   },
 ]
