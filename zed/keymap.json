@@ -42,6 +42,7 @@
       "g n": "editor::GoToDiagnostic",
       "g p": "editor::GoToPreviousDiagnostic",
       "g r": "editor::Rename",
+      "g s": "editor::SwitchSourceHeader",
       "g shift-r": "editor::FindAllReferences",
     },
   },
@@ -81,13 +82,31 @@
     },
   },
   {
-    "context": "Workspace",
-    "bindings": {},
-  },
-  {
     "context": "Terminal",
     "unbind": {
       "ctrl-enter": "assistant::InlineAssist",
+    },
+  },
+  {
+    "context": "VimControl && !menu",
+    "bindings": {
+      "ctrl-s": "outline::Toggle",
+      "g s": "editor::SwitchSourceHeader",
+    },
+    "unbind": {
+      "g s": "outline::Toggle",
+    },
+  },
+  {
+    "context": "(vim_mode == helix_normal || vim_mode == helix_select) && !menu",
+    "unbind": {
+      "g s": "vim::FirstNonWhitespace",
+    },
+  },
+  {
+    "context": "Workspace",
+    "unbind": {
+      "ctrl-s": "workspace::Save",
     },
   },
 ]
