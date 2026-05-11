@@ -7,6 +7,9 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "file_finder": {
+    "modal_max_width": "medium",
+  },
   "disable_ai": true,
   "inlay_hints": {
     "enabled": false,
@@ -112,6 +115,9 @@
     },
   },
   "languages": {
+    "JSON": {
+      "tab_size": 4,
+    },
     "Starlark": {
       "formatter": {
         "external": {
