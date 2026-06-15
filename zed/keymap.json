@@ -37,10 +37,13 @@
   {
     "context": "Editor && vim_mode == normal",
     "bindings": {
-      "-": "editor::SelectLine",
+      "-": [
+        "action::Sequence",
+        ["vim::EndOfLineDownward", "vim::ToggleVisual", "vim::FirstNonWhitespace"],
+      ],
       "space f": "editor::Format",
-      "g n": "editor::GoToDiagnostic",
       "g p": "editor::GoToPreviousDiagnostic",
+      "g n": "editor::GoToDiagnostic",
       "g r": "editor::Rename",
       "g shift-r": "editor::FindAllReferences",
     },
@@ -109,6 +112,46 @@
     "context": "Workspace",
     "unbind": {
       "ctrl-s": "workspace::Save",
+    },
+  },
+  {
+    "context": "Workspace",
+    "unbind": {
+      "ctrl-s": "workspace::Save",
+    },
+  },
+  {
+    "context": "Editor && edit_prediction",
+    "bindings": {
+      "alt-e": "editor::AcceptEditPrediction",
+    },
+  },
+  {
+    "context": "Editor && edit_prediction",
+    "unbind": {
+      "alt-tab": "editor::AcceptEditPrediction",
+    },
+  },
+  {
+    "bindings": {
+      "ctrl-shift-left": "pane::SwapItemLeft",
+    },
+  },
+  {
+    "context": "Pane",
+    "unbind": {
+      "ctrl-shift-pageup": "pane::SwapItemLeft",
+    },
+  },
+  {
+    "bindings": {
+      "ctrl-shift-right": "pane::SwapItemRight",
+    },
+  },
+  {
+    "context": "Pane",
+    "unbind": {
+      "ctrl-shift-pagedown": "pane::SwapItemRight",
     },
   },
 ]

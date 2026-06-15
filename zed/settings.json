@@ -28,9 +28,9 @@
   "edit_predictions": {
     "ollama": {
       "prompt_format": "zeta",
-      "model": "lennyerik/zeta:latest",
+      "model": "gemma4:26b",
     },
-    "provider": "ollama",
+    "provider": "zed",
   },
   "soft_wrap": "editor_width",
   "autosave": "on_focus_change",
@@ -89,8 +89,8 @@
     "use_system_clipboard": "on_yank",
   },
   "vim_mode": true,
-  "ui_font_size": 15.0,
-  "buffer_font_size": 14.0,
+  "ui_font_size": 14.0,
+  "buffer_font_size": 13.0,
   "theme": {
     "mode": "dark",
     "light": "One Light",
@@ -111,12 +111,39 @@
         "punctuation.delimiter": {
           "color": "#A89984",
         },
+        // TODO, WIP, MAYBE
+        "constant.comment": {
+          "color": "#889964",
+          "font_weight": 800,
+        },
+        // INFO, NOTE, XXX, DOCS, PERF, TEST
+        "string.comment": {
+          "color": "#887984",
+          "font_weight": 800,
+        },
+        // WARN, HACK, WARNING, FIX, SAFETY
+        "keyword.comment": {
+          "color": "#C8A954",
+          "font_weight": 800,
+        },
+        // ERROR, FIXME, BUG, DELETE
+        "property.comment": {
+          "color": "#C87954",
+          "font_weight": 800,
+        },
       },
     },
   },
   "languages": {
     "JSON": {
       "tab_size": 4,
+    },
+    "Markdown": {
+      "show_edit_predictions": true,
+    },
+    "Rust": {
+      "preferred_line_length": 120,
+      "show_edit_predictions": true,
     },
     "Starlark": {
       "formatter": {
