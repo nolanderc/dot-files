@@ -50,6 +50,10 @@ if ! [ -d "$HOME/.local/bin/$nvim_name" ]; then
     ln --force --symbolic "./$nvim_name/bin/nvim" ./vim
 fi
 
+if ! command -v zed; then
+    curl -f https://zed.dev/install.sh | sh
+fi
+
 if ! [ -d "$HOME/.cargo" ]; then
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 fi
