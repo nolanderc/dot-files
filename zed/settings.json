@@ -10,7 +10,7 @@
   "file_finder": {
     "modal_max_width": "medium",
   },
-  "disable_ai": true,
+  "disable_ai": false,
   "inlay_hints": {
     "enabled": false,
   },

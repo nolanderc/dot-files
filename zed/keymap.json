@@ -32,6 +32,8 @@
     "bindings": {
       "ctrl-e": "pane::RevealInProjectPanel",
       "ctrl-t": "terminal_panel::ToggleFocus",
+      "ctrl-g": "vim::SelectNext",
+      "ctrl-shift-g": "editor::UndoSelection",
     },
   },
   {
@@ -154,4 +156,22 @@
       "ctrl-shift-pagedown": "pane::SwapItemRight",
     },
   },
+  {
+    "context": "VimControl && !menu",
+    "unbind": {
+      "ctrl-g": "vim::ShowLocation",
+    },
+  },
+  {
+    "context": "Editor && mode == full",
+    "unbind": {
+      "ctrl-g": "go_to_line::Toggle",
+    },
+  },
+  {
+    "context": "Workspace",
+    "unbind": {
+      "ctrl-shift-g": "git_panel::ToggleFocus"
+    }
+  }
 ]

@@ -36,3 +36,9 @@ set tide_right_prompt_items status cmd_duration context jobs direnv node python 
 function jjd
     jj edit "description($argv[1])"
 end
+
+# Pi
+fish_add_path "/home/user/.local/share/pi-node/node-v22.23.2-linux-x64/bin"
+
+# opencode
+fish_add_path /home/user/.opencode/bin
