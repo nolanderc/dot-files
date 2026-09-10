@@ -27,5 +27,6 @@ link "./zed" "$HOME/.config/zed"
 link "./scripts/wayland-cwd.sh" "$HOME/.local/bin/wayland-cwd.sh"
 link "./scripts/start-terminal.sh" "$HOME/.local/bin/start-terminal.sh"
 link "./config/Xresources" "$HOME/.Xresources"
+link "./docker-ai/docker-ai.sh" "$HOME/.local/bin/docker-ai.sh"
 
 
