@@ -34,6 +34,7 @@ sudo docker run --rm -it \
     -w "$PWD" \
     -v "$HOME/.config/opencode:$HOME/.config/opencode" \
     -v "$HOME/.local/share/opencode:$HOME/.local/share/opencode" \
+    -v "$HOME/.local/share/opentui:$HOME/.local/share/opentui" \
     -v "$HOME/.local/state/opencode:$HOME/.local/state/opencode" \
     -v "$HOME/.cache/opencode:$HOME/.cache/opencode" \
     -v "$HOME/.gitconfig:$HOME/.gitconfig:ro" \
