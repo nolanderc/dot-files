@@ -50,12 +50,16 @@ RUN if getent group "$USER_GID" >/dev/null && [[ "$(getent group "$USER_GID" | c
     && if ! getent group "$USER_GID" >/dev/null; then groupadd -g "$USER_GID" "$USER_NAME"; fi \
     && if ! id -u "$USER_NAME" >/dev/null 2>&1; then useradd -m -u "$USER_UID" -g "$USER_GID" -s /bin/bash "$USER_NAME"; fi
 
-RUN apt-get update && apt-get install -y --no-install-recommends ripgrep \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends ripgrep sudo \
+    && rm -rf /var/lib/apt/lists/* \
+    && echo "$USER_NAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USER_NAME \
+    && chmod 0440 /etc/sudoers.d/$USER_NAME
 
 USER "$USER_NAME"
 
 ENV HOME="/home/$USER_NAME"
+
+COPY cargo-config.toml "$CARGO_HOME/config.toml"
 
 WORKDIR /workspace
 
