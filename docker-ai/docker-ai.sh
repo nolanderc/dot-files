@@ -38,5 +38,7 @@ sudo docker run --rm -it \
     -v "$HOME/.local/state/opencode:$HOME/.local/state/opencode" \
     -v "$HOME/.cache/opencode:$HOME/.cache/opencode" \
     -v "$HOME/.gitconfig:$HOME/.gitconfig:ro" \
+    -v "ai-cargo-cache:/usr/local/cargo/registry" \
+    -v "ai-cargo-target:/tmp/target" \
     "$IMAGE" \
     "$@"

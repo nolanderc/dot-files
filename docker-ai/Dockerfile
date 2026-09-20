@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     ca-certificates \
     git \
+    git-lfs \
     nodejs \
     npm \
     unzip \
@@ -53,7 +54,9 @@ RUN if getent group "$USER_GID" >/dev/null && [[ "$(getent group "$USER_GID" | c
 RUN apt-get update && apt-get install -y --no-install-recommends ripgrep sudo \
     && rm -rf /var/lib/apt/lists/* \
     && echo "$USER_NAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USER_NAME \
-    && chmod 0440 /etc/sudoers.d/$USER_NAME
+    && chmod 0440 /etc/sudoers.d/$USER_NAME \
+    && mkdir -p /tmp/target /usr/local/cargo/registry \
+    && chown -R "$USER_UID:$USER_GID" /tmp/target /usr/local/cargo/registry
 
 USER "$USER_NAME"
 
